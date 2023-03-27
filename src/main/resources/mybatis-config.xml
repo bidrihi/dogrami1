@@ -10,19 +10,12 @@
 
 	<!-- 매퍼에서 사용할 vo 클래스에 대한 줄임말 선언 -->
 	<typeAliases>		
-		<typeAlias type="org.ict.first.member.model.vo.Member" alias="Member" />
-		<typeAlias type="org.ict.first.common.SearchDate" alias="SearchDate" />
-		<typeAlias type="org.ict.first.common.Paging" alias="Paging" />
-		<typeAlias type="org.ict.first.common.Searchs" alias="Searchs" />
-		<typeAlias type="org.ict.first.notice.model.vo.Notice" alias="Notice" />
-		<typeAlias type="org.ict.first.board.model.vo.Board" alias="Board" />
+		<typeAlias type="com.cono.dogrami." alias="" />
 	
 	</typeAliases>
 	
 	<!-- mapper : 실행할 쿼리문만 별도로 작성하는 파일을 말함 -->
 	<mappers>
 		<mapper resource="mappers/member-mapper.xml" />
-		<mapper resource="mappers/notice-mapper.xml" />
-		<mapper resource="mappers/board-mapper.xml" />
 	</mappers>
 </configuration>
