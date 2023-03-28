@@ -85,7 +85,7 @@ public class Diary implements java.io.Serializable {
 		return board_date;
 	}
 
-	public void setBoard_date(Date bOARD_DATE) {
+	public void setBoard_date(Date board_date) {
 		this.board_date = board_date;
 	}
 
