@@ -1,7 +1,7 @@
 package com.cono.dogrami.dog.model.vo;
 
 public class Dog implements java.io.Serializable {
-    private static final long serialVersionUID = 2820613488803413553L;
+    private static final long serialVersionUID = 282061348880341355L;
     private String dog_type;	//품종
 	private String dog_size;	//크기
 	private String dog_hair;	//털빠짐
