@@ -12,4 +12,13 @@ public class DailyController {
 
     @Autowired
     private DailyService dailyService;
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
