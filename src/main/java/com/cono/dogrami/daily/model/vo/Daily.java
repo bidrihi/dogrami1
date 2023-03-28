@@ -11,14 +11,14 @@ public class Daily implements java.io.Serializable {
 	private String board_content;
 	private String board_old_file;
 	private String board_new_file;
-	private Date BOARD_DATE;
+	private Date board_date;
 	private int board_count;
 	private int like_count;
 	
 	public Daily() {}
 
 	public Daily(int board_no, String title, String board_writer, String board_content, String board_old_file,
-			String board_new_file, Date bOARD_DATE, int board_count, int like_count) {
+			String board_new_file, Date board_date, int board_count, int like_count) {
 		super();
 		this.board_no = board_no;
 		this.title = title;
@@ -26,7 +26,7 @@ public class Daily implements java.io.Serializable {
 		this.board_content = board_content;
 		this.board_old_file = board_old_file;
 		this.board_new_file = board_new_file;
-		BOARD_DATE = bOARD_DATE;
+		this.board_date = board_date;
 		this.board_count = board_count;
 		this.like_count = like_count;
 	}
@@ -79,12 +79,12 @@ public class Daily implements java.io.Serializable {
 		this.board_new_file = board_new_file;
 	}
 
-	public Date getBOARD_DATE() {
-		return BOARD_DATE;
+	public Date getBoard_date() {
+		return board_date;
 	}
 
-	public void setBOARD_DATE(Date bOARD_DATE) {
-		BOARD_DATE = bOARD_DATE;
+	public void setBoard_date(Date bOARD_DATE) {
+		this.board_date = board_date;
 	}
 
 	public int getBoard_count() {
@@ -111,7 +111,7 @@ public class Daily implements java.io.Serializable {
 	public String toString() {
 		return "Daily [board_no=" + board_no + ", title=" + title + ", board_writer=" + board_writer
 				+ ", board_content=" + board_content + ", board_old_file=" + board_old_file + ", board_new_file="
-				+ board_new_file + ", BOARD_DATE=" + BOARD_DATE + ", board_count=" + board_count + ", like_count="
+				+ board_new_file + ", board_date=" + board_date + ", board_count=" + board_count + ", like_count="
 				+ like_count + "]";
 	}
     
