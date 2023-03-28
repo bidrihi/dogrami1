@@ -1,9 +1,10 @@
-package com.cono.dogrami.daily.model.vo;
+package com.cono.dogrami.question.model.vo;
 
 import java.sql.Date;
 
-public class Daily implements java.io.Serializable {
-    private static final long serialVersionUID = 19L;
+public class Question implements java.io.Serializable {
+
+    private static final long serialVersionUID = 21L;
 
     private int board_no;
     private String title;
@@ -15,11 +16,11 @@ public class Daily implements java.io.Serializable {
     private int board_count;
     private int like_count;
 
-    public Daily() {
+    public Question() {
     }
 
-    public Daily(int board_no, String title, String board_writer, String board_content, String board_old_file,
-                 String board_new_file, Date board_date, int board_count, int like_count) {
+    public Question(int board_no, String title, String board_writer, String board_content, String board_old_file,
+                    String board_new_file, Date board_date, int board_count, int like_count) {
         super();
         this.board_no = board_no;
         this.title = title;
@@ -88,7 +89,7 @@ public class Daily implements java.io.Serializable {
         return board_date;
     }
 
-    public void setBoard_date(Date bOARD_DATE) {
+    public void setBoard_date(Date board_date) {
         this.board_date = board_date;
     }
 
@@ -110,10 +111,11 @@ public class Daily implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "Daily [board_no=" + board_no + ", title=" + title + ", board_writer=" + board_writer
+        return "Question [board_no=" + board_no + ", title=" + title + ", board_writer=" + board_writer
                 + ", board_content=" + board_content + ", board_old_file=" + board_old_file + ", board_new_file="
                 + board_new_file + ", board_date=" + board_date + ", board_count=" + board_count + ", like_count="
                 + like_count + "]";
     }
+
 
 }
