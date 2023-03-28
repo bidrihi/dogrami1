@@ -15,7 +15,7 @@ import com.cono.dogrami.placereply.model.vo.PlaceReply;
 public class PlaceReplyController {
 	private static final Logger logger = LoggerFactory.getLogger(PlaceReplyController.class);
 	@Autowired
-	private PlaceReplyService replyService;
+	private PlaceReplyService placeReplyService;
 	
 	// Place 댓글
 

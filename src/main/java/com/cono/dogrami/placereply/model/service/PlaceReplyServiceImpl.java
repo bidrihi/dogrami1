@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import com.cono.dogrami.placereply.model.dao.PlaceReplyDao;
 import com.cono.dogrami.placereply.model.vo.PlaceReply;
 
-@Service("PlaceReplyService")
+@Service("placeReplyService")
 public class PlaceReplyServiceImpl implements PlaceReplyService{
 
 	@Autowired
-	private PlaceReplyDao replyDao;
+	private PlaceReplyDao placeReplyDao;
 
 	@Override
 	public ArrayList<PlaceReply> SelectList() {

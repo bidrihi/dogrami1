@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import com.cono.dogrami.placeboard.model.dao.PlaceBoardDao;
 import com.cono.dogrami.placeboard.model.vo.PlaceBoard;
 
-@Service("PlaceBoardService")
+@Service("placeBoardService")
 public class PlaceBoardServiceImpl implements PlaceBoardService {
 
 	@Autowired
-	private PlaceBoardDao boardDao;
+	private PlaceBoardDao placeBoardDao;
 
 	@Override
 	public ArrayList<PlaceBoard> SelectList() {

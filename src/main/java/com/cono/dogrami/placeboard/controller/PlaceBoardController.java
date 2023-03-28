@@ -17,7 +17,7 @@ import com.cono.dogrami.placeboard.model.service.PlaceBoardService;
 public class PlaceBoardController {
 	private static final Logger logger = LoggerFactory.getLogger(PlaceBoardController.class);
 	@Autowired //(->Service)
-	private PlaceBoardService boardService;
+	private PlaceBoardService placeBoardService;
 
 	//Place 게시판
 	//페이지 내보내기용

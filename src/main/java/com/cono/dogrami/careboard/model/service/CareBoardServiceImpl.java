@@ -2,12 +2,17 @@ package com.cono.dogrami.careboard.model.service;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cono.dogrami.careboard.model.dao.CareBoardDao;
 import com.cono.dogrami.careboard.model.vo.CareBoard;
-@Service("CareBoardService")
+@Service("careBoardService")
 public class CareBoardServiceImpl implements CareBoardService {
 
+	@Autowired
+	private CareBoardDao careBoardDao;
+	
 	@Override
 	public ArrayList<CareBoard> SelectList() {
 		return null;

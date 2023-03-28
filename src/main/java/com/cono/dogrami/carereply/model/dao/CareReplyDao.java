@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cono.dogrami.carereply.model.vo.CareReply;
 
-@Repository("CareReplyDao")
+@Repository("careReplyDao")
 public class CareReplyDao {
 
 	@Autowired

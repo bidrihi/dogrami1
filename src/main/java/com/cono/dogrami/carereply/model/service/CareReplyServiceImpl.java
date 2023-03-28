@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import com.cono.dogrami.carereply.model.dao.CareReplyDao;
 import com.cono.dogrami.carereply.model.vo.CareReply;
 
-@Service("CareReplyService")
+@Service("careReplyService")
 public class CareReplyServiceImpl implements CareReplyService{
 
 	@Autowired
-	private CareReplyDao replyDao;
+	private CareReplyDao careReplyDao;
 
 	@Override
 	public ArrayList<CareReply> SelectList() {

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.cono.dogrami.placereply.model.vo.PlaceReply;
 
-@Repository("PlaceReplyDao")
+@Repository("placeReplyDao")
 public class PlaceReplyDao {
 
 	@Autowired
