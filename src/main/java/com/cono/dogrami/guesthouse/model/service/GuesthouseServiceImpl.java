@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("guesthouseService")
-public class GuesthouseServiceImpl {
+public class GuesthouseServiceImpl implements GuesthouseService {
     @Autowired
     private GuesthouseDao guesthouseDao;
 }
