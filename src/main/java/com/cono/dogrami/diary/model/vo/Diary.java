@@ -3,9 +3,9 @@ package com.cono.dogrami.diary.model.vo;
 import java.sql.Date;
 
 public class Diary implements java.io.Serializable {
-    private static final long serialVersionUID = 23L;
-    
-    private int board_no;
+	private static final long serialVersionUID = 23L;
+
+	private int board_no;
 	private String title;
 	private String board_writer;
 	private String board_content;
@@ -15,11 +15,11 @@ public class Diary implements java.io.Serializable {
 	private int board_count;
 	private int like_count;
 	private char open;
-	
+
 	public Diary() {}
 
 	public Diary(int board_no, String title, String board_writer, String board_content, String board_old_file,
-			String board_new_file, Date board_date, int board_count, int like_count, char open) {
+				 String board_new_file, Date board_date, int board_count, int like_count, char open) {
 		super();
 		this.board_no = board_no;
 		this.title = title;
@@ -124,6 +124,6 @@ public class Diary implements java.io.Serializable {
 				+ board_new_file + ", board_date=" + board_date + ", board_count=" + board_count + ", like_count="
 				+ like_count + ", open=" + open + "]";
 	}
-	
-    
+
+
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository("guesthouseDao")
 public class GuesthouseDao {
-    @Autowired
+   
+	@Autowired
     private SqlSessionTemplate session;
 }
