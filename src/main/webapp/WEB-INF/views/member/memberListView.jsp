@@ -45,140 +45,106 @@ form.sform {
 	}); //document.ready
 	
 	//로그인 제한/가능 라디오 체크가 변경되었을 때 실행되는 함수임
-	function changeLogin(element){
+	 function changeLogin(element){
 		//선택한 radio의 name 속성의 이름에서 userid 분리 추출함
-		var userid = element.name.substring(9);
-		console.log("changeLogin : " + userid);
+		var user_id = element.name.substring(12);
+		console.log("changeLogin : " + user_id);
 		
 		if(element.checked == true && element.value == "N"){
 			//로그인 제한을 체크했다면
 			console.log("로그인 제한 체크함");
-			location.href = "${ pageContext.servletContext.contextPath }/loginok.do?userid=" 
-						+ userid + "&login_ok=N";
+			location.href = "${ pageContext.servletContext.contextPath }/login_limit.do?user_id=" 
+						+ user_id + "&login_limit=N";
 		}else{
 			//로그인 가능을 체크했다면
 			console.log("로그인 가능 체크함");
-			location.href = "${ pageContext.servletContext.contextPath }/loginok.do?userid=" 
-						+ userid + "&login_ok=Y";
+			location.href = "${ pageContext.servletContext.contextPath }/login_limit.do?user_id=" 
+						+ user_id + "&login_limit=Y";
 		}
 	}
+	  function changeAdmin(element){
+		//선택한 radio의 name 속성의 이름에서 userid 분리 추출함
+		var user_id = element.name.substring(11);
+		console.log("changeAdmin : " + user_id);
+		
+		if(element.checked == true){
+			//로그인 제한을 체크했다면
+			console.log("관리자 권한 부여함");
+			location.href = "${ pageContext.servletContext.contextPath }/user_admin.do?user_id=" 
+						+ user_id + "&user_admin=Y";
+		} else{
+			//로그인 가능을 체크했다면
+			console.log("관리자 권한 회수함");
+			location.href = "${ pageContext.servletContext.contextPath }/user_admin.do?user_id=" 
+						+ user_id + "&user_admin=N";
+		} 
+	}  
 </script>
 </head>
 <body>
 <c:import url="/WEB-INF/views/common/menubar.jsp" />
-<hr>
 <h1 align="center">회원 관리 페이지</h1>
 <h2 align="center">현재 회원수 : ${ requestScope.list.size() } 명</h2>
 <center>
-	<button onclick="javascript:location.href='${ pageContext.servletContext.contextPath }/mlist.do';">전체 보기</button>
+	<button onclick="javascript:location.href='${ pageContext.servletContext.contextPath }/mlist2.do';">전체 보기</button>
 	<br><br>
-	<!-- 항목별 검색 기능 추가 -->
-	<fieldset id="ss">
-		<legend>검색할 항목을 선택하세요.</legend>
-		<input type="radio" name="item" id="uid"> 회원아이디 &nbsp;
-		<input type="radio" name="item" id="ugen"> 성별 &nbsp;
-		<input type="radio" name="item" id="uage"> 연령대 &nbsp;
-		<input type="radio" name="item" id="uenroll"> 가입날짜 &nbsp;
-		<input type="radio" name="item" id="ulogin"> 로그인제한 
-	</fieldset>
-	<!-- 검색 항목 제공 끝 -->
-	<br>
-	<!-- 회원아이디로 검색 폼 -->
-	<form action="${ pageContext.servletContext.contextPath }/msearch.do" 
-	method="post" id="idform" class="sform">
-		<input type="hidden" name="action" value="id">
-		<input type="search" name="keyword"> &nbsp;
-		<input type="submit" value="검색">
-	</form>
 	
-	<!-- 성별로 검색 폼 -->
-	<form action="${ pageContext.servletContext.contextPath }/msearch.do" 
-	method="post" id="genderform" class="sform">
-		<input type="hidden" name="action" value="gender">
-		<input type="radio" name="keyword" value="M"> 남자 
-		&nbsp; <input type="radio" name="keyword" value="F"> 여자
-		<input type="submit" value="검색">
-	</form>
-	
-	<!-- 연령대로 검색 폼 -->
-	<form action="${ pageContext.servletContext.contextPath }/msearch.do" 
-	method="post" id="ageform" class="sform">
-		<input type="hidden" name="action" value="age">
-		<input type="radio" name="keyword" value="20"> 20대 &nbsp;
-		<input type="radio" name="keyword" value="30"> 30대 &nbsp;
-		<input type="radio" name="keyword" value="40"> 40대 &nbsp;
-		<input type="radio" name="keyword" value="50"> 50대 &nbsp;
-		<input type="radio" name="keyword" value="60"> 60대이상 &nbsp;
-		<input type="submit" value="검색">
-	</form>
-	
-	<!-- 가입날짜로 검색 폼 -->
-	<form action="${ pageContext.servletContext.contextPath }/msearch.do" 
-	method="post" id="enrollform" class="sform">
-		<input type="hidden" name="action" value="enroll">
-		<input type="date" name="begin"> ~ 
-			<input type="date" name="end"> &nbsp;
-		<input type="submit" value="검색">
-	</form>
-	
-	<!-- 로그인 제한/가능 여부로 검색 폼 -->
-	<form action="${ pageContext.servletContext.contextPath }/msearch.do" 
-	method="post" id="lokform" class="sform">
-		<input type="hidden" name="action" value="login">
-		<input type="radio" name="keyword" value="Y"> 로그인 가능 회원 &nbsp;
-		<input type="radio" name="keyword" value="N"> 로그인 제한 회원 &nbsp;
-		<input type="submit" value="검색">
-	</form>
-	
-</center>
 <br><br>
 <!-- 조회해 온 회원 리스트 출력 처리 -->
 <table align="center" border="1" cellspacing="0" cellpadding="3">
 	<tr>
 		<th>아이디</th>
 		<th>이름</th>
-		<th>성별</th>
-		<th>나이</th>
-		<th>전화번호</th>
+		<th>닉네임</th>
 		<th>이메일</th>
-		<th>가입날짜</th>
-		<th>마지막 정보수정날짜</th>
+		<th>생년월일</th>
+		<th>성별</th>
+		<th>반려견 이름</th>
+		<th>반려견 생년월일</th>
+		<th>반려견 종</th>
+		<th>반려견 성별</th>
+		<th>관리자 여부</th>
 		<th>로그인 제한여부</th>
 	</tr>
 	<c:forEach items="${ requestScope.list }" var="m">
 		<tr>
-			<td>${ m.userid }</td>
-			<td>${ m.username }</td>
-			<td>${ m.gender }</td>
-			<td>${ m.age }</td>
-			<td>${ m.phone }</td>
+			<td>${ m.user_id }</td>
+			<td>${ m.user_name }</td>
+			<td>${ m.user_nick }</td>
 			<td>${ m.email }</td>
+			<td>${ m.birth }</td>
+			<td>${ m.gender }</td>
+			<td>${ m.dog_name }</td>
+			<td>${ m.dog_birth }</td>
+			<td>${ m.dog_type }</td>
+			<td>${ m.dog_gender }</td>
 			<td>
-				<fmt:formatDate value="${ m.enroll_date }" 
-				type="date" dateStyle="medium" />
+				<c:if test="${ m.user_admin eq 'Y' }">
+					<input type="checkbox" name="user_admin_${ m.user_id }" 
+					value="Y" checked onchange="changeAdmin(this);"> 관리자
+				</c:if>
+				<c:if test="${ m.user_admin eq 'N' }">
+					<input type="checkbox" name="user_admin_${ m.user_id }" 
+					value="Y" onchange="changeAdmin(this);"> 관리자
+				</c:if>
 			</td>
 			<td>
-				<fmt:formatDate value="${ m.lastmodified }"
-				type="date" dateStyle="medium" />
-			</td>
-			<td>
-				<c:if test="${ m.login_ok eq 'Y' }">
-					<input type="radio" name="login_ok_${ m.userid }" 
+				<c:if test="${ m.login_limit eq 'Y' }">
+					<input type="radio" name="login_limit_${ m.user_id }" 
 					value="Y" checked onchange="changeLogin(this);"> 가능 &nbsp;
-					<input type="radio" name="login_ok_${ m.userid }" 
+					<input type="radio" name="login_limit_${ m.user_id }" 
 					value="N" onchange="changeLogin(this);"> 제한
 				</c:if>
-				<c:if test="${ m.login_ok eq 'N' }">
-					<input type="radio" name="login_ok_${ m.userid }" 
+				<c:if test="${ m.login_limit eq 'N' }">
+					<input type="radio" name="login_limit_${ m.user_id }" 
 					value="Y" onchange="changeLogin(this);"> 가능 &nbsp;
-					<input type="radio" name="login_ok_${ m.userid }" 
+					<input type="radio" name="login_limit_${ m.user_id }" 
 					value="N" checked onchange="changeLogin(this);"> 제한
 				</c:if>
 			</td>
 		</tr>
 	</c:forEach>
 </table>
-<hr>
 <c:import url="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

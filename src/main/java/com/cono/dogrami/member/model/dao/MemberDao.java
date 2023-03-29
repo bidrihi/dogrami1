@@ -1,6 +1,7 @@
 package com.cono.dogrami.member.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +19,19 @@ public class MemberDao {
 		return null;
 	}
 
-	public int selectDupCheckId(String userid) {
+	public int selectDupCheckId(String user_id) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	public Member selectMember(String userid) {
+	public Member selectMember(String user_id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public ArrayList<Member> selectList() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Member> list = session.selectList("memberMapper.selectList");
+		return (ArrayList<Member>)list;
 	}
 
 	public int insertMember(Member member) {
@@ -43,12 +44,11 @@ public class MemberDao {
 		return 0;
 	}
 
-	public int updateLoginok(Member member) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateLoginLimit(Member member) {
+		return session.update("memberMapper.updateLoginLimit", member);
 	}
 
-	public int deleteMember(String userid) {
+	public int deleteMember(String user_id) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -68,8 +68,12 @@ public class MemberDao {
 		return null;
 	}
 
-	public ArrayList<Member> selectSearchLoginOK(String keyword) {
+	public ArrayList<Member> selectSearchLoginLimit(String keyword) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public int updateUserAdmin(Member member) {
+		return session.update("memberMapper.updateUserAdmin", member);
 	}
 }

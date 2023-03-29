@@ -3,7 +3,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+ <!-- THEME CSS
+    ================================================== -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/resources/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Themify -->
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/resources/plugins/themify/css/themify-icons.css">
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/resources/plugins/slick-carousel/slick-theme.css">
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/plugins/slick-carousel/slick.css">
+    <!-- Slick Carousel -->
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/resources/plugins/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/resources/plugins/owl-carousel/owl.theme.default.min.css">
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/resources/plugins/magnific-popup/magnific-popup.css">
+    <!-- manin stylesheet -->
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/style.css">
 </head>
 <body>
 <!-- 로그인 안 한 경우 -->
@@ -34,6 +54,7 @@
                 <div class="collapse navbar-collapse" id="navbarContent">
                     <ul id="menu" class="menu navbar-nav ">
                         <li class="nav-item"><a href="main.do" class="nav-link">Home</a></li>
+                        
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
                                data-toggle="dropdown"
@@ -128,7 +149,8 @@
                 <div class="collapse navbar-collapse" id="navbarContent">
                     <ul id="menu" class="menu navbar-nav ">
                         <li class="nav-item"><a href="main.do" class="nav-link">Home</a></li>
-                        <li class="nav-item"><a href="contact.html" class="nav-link">회원조회</a></li>
+                        <li class="nav-item"><a href="${ pageContext.servletContext.contextPath }/mlist2.do" 
+                        	class="nav-link">회원조회</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
                                data-toggle="dropdown"

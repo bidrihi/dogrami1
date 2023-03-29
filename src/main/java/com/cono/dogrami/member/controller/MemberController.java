@@ -1,17 +1,13 @@
 package com.cono.dogrami.member.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cono.dogrami.member.model.service.MemberService;
 import com.cono.dogrami.member.model.vo.Member;
@@ -64,13 +60,45 @@ public class MemberController {
 //	public String memberUpdateMethod(Member member,
 //			Model model) {}
 //	
-//	//회원관리용 회원전체목록 조회 처리용
-//	public String memberListViewMethod(Model model) {}
+	//회원관리용 회원전체목록 조회 처리용
+	@RequestMapping("mlist2.do")
+	public String memberListViewMethod(Model model) {
+		ArrayList<Member> list = memberService.selectList();
+			model.addAttribute("list", list);
+			return "member/memberListView";
+		
+	}
 //	
-//	//관리자 기능 : 회원 로그인 제한/가능 처리용 메소드
-//	public String changeLoginOKMethod(Member member, 
-//			Model model) {}
-//	
+	//관리자 기능 : 회원 로그인 제한/가능 처리용 메소드
+	@RequestMapping("login_limit.do")
+	public String changeLoginLimitMethod(Member member, 
+			Model model) {
+		logger.info("login_limit.do : " + member.getUser_id()
+        				+ ", " + member.getLogin_limit());
+		if(memberService.updateLoginLimit(member) > 0) {
+			return "redirect:mlist2.do";
+		}else {
+			model.addAttribute("message", 
+			"로그인 제한/허용 처리 오류 발생!");
+			return "common/error";
+		}
+	}
+	
+	//관리자 권한 부여 처리용 메소드
+	@RequestMapping("user_admin.do")
+	public String changeUserAdminMethod(Member member,
+			Model model) {
+		logger.info("user_admin.do : " + member.getUser_id()
+					+ ", " + member.getUser_admin());
+		if(memberService.updateUserAdmin(member)>0) {
+			return "redirect:mlist2.do";
+		}else {
+			model.addAttribute("message",
+					"관리자 권한 부여 처리 오류 발생!");
+			return "common/error";
+		}
+	}
+
 //	//회원 검색 처리용
 //	public String memberSearchMethod(
 //			HttpServletRequest request, Model model) {}

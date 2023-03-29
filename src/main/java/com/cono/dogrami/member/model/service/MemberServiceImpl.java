@@ -20,13 +20,13 @@ public class MemberServiceImpl implements MemberService{
 		}
 
 		@Override
-		public int selectDupCheckId(String userid) {
-			return memberDao.selectDupCheckId(userid);
+		public int selectDupCheckId(String user_id) {
+			return memberDao.selectDupCheckId(user_id);
 		}
 
 		@Override
-		public Member selectMember(String userid) {
-			return memberDao.selectMember(userid);
+		public Member selectMember(String user_id) {
+			return memberDao.selectMember(user_id);
 		}
 
 		@Override
@@ -45,13 +45,13 @@ public class MemberServiceImpl implements MemberService{
 		}
 
 		@Override
-		public int updateLoginok(Member member) {
-			return memberDao.updateLoginok(member);
+		public int updateLoginLimit(Member member) {
+			return memberDao.updateLoginLimit(member);
 		}
 
 		@Override
-		public int deleteMember(String userid) {
-			return memberDao.deleteMember(userid);
+		public int deleteMember(String user_id) {
+			return memberDao.deleteMember(user_id);
 		}
 
 		@Override
@@ -70,7 +70,12 @@ public class MemberServiceImpl implements MemberService{
 		}
 
 		@Override
-		public ArrayList<Member> selectSearchLoginOK(String keyword) {
-			return memberDao.selectSearchLoginOK(keyword);
+		public ArrayList<Member> selectSearchLoginLimit(String keyword) {
+			return memberDao.selectSearchLoginLimit(keyword);
+		}
+
+		@Override
+		public int updateUserAdmin(Member member) {
+			return memberDao.updateUserAdmin(member);
 		}
 }

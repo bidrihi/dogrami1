@@ -5,18 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title></title>
-<style type="text/css">
-footer {
-	text-align: center;
-	background-color: navy;
-	color: white;
-}
-</style>
 </head>
 <body>
-<footer>
-copyright@first 스프링 래거시 MVC 템플릿 적용 프로젝트<br>
-2023-03-15 개발, developer : admin<br>
+<footer class="footer-section bg-grey">
+	<p class="copyright" align="center">© Copyright 2019 - Revolve. All Rights Reserved. Distribution 
+		<a class="text-white" href="https://themewagon.com">ThemeWagon.</a>
+    </p>     
 </footer>
 </body>
 </html>
