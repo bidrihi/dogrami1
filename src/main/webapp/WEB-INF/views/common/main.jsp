@@ -408,22 +408,3 @@
 <!--footer end-->
 
 <!-- THEME JAVASCRIPT FILES
-================================================== -->
-<!-- initialize jQuery Library -->
-<script src="${pageContext.servletContext.contextPath}/resources/plugins/jquery/jquery.js"></script>
-<!-- Bootstrap jQuery -->
-<script src="${pageContext.servletContext.contextPath}/resources/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="${pageContext.servletContext.contextPath}/resources/plugins/bootstrap/js/popper.min.js"></script>
-<!-- Owl caeousel -->
-<script src="${pageContext.servletContext.contextPath}/resources/plugins/owl-carousel/owl.carousel.min.js"></script>
-<script src="${pageContext.servletContext.contextPath}/resources/plugins/slick-carousel/slick.min.js"></script>
-<script src="${pageContext.servletContext.contextPath}/resources/plugins/magnific-popup/magnific-popup.js"></script>
-<!-- Instagram Feed Js -->
-<script src="${pageContext.servletContext.contextPath}/resources/plugins/instafeed-js/instafeed.min.js"></script>
-<!-- Google Map -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCC72vZw-6tGqFyRhhg5CkF2fqfILn2Tsw"></script>
-<script src="${pageContext.servletContext.contextPath}/resources/plugins/google-map/gmap.js"></script>
-<!-- main js -->
-<script src="${pageContext.servletContext.contextPath}/resources/js/custom.js"></script>
-</body>
-</html>

@@ -570,7 +570,6 @@ overlay search
 }
 
 @media (max-width: 768px) {
-
     .overlay nav,
     .overlay .search-blog-post {
         top: 50%;
@@ -582,7 +581,6 @@ overlay search
 }
 
 @media (max-width: 767px) {
-
     .overlay nav,
     .overlay .search-blog-post,
     .search-blog-title {
