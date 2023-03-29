@@ -6,7 +6,7 @@ public class Daily implements java.io.Serializable {
     private static final long serialVersionUID = 19L;
 
     private int board_no;
-    private String title;
+    private String board_title;
     private String board_writer;
     private String board_content;
     private String board_old_file;
@@ -14,15 +14,15 @@ public class Daily implements java.io.Serializable {
     private Date board_date;
     private int board_count;
     private int like_count;
-
+    
     public Daily() {
     }
 
-    public Daily(int board_no, String title, String board_writer, String board_content, String board_old_file,
+    public Daily(int board_no, String board_title, String board_writer, String board_content, String board_old_file,
                  String board_new_file, Date board_date, int board_count, int like_count) {
         super();
         this.board_no = board_no;
-        this.title = title;
+        this.board_title = board_title;
         this.board_writer = board_writer;
         this.board_content = board_content;
         this.board_old_file = board_old_file;
@@ -44,12 +44,12 @@ public class Daily implements java.io.Serializable {
         this.board_no = board_no;
     }
 
-    public String getTitle() {
-        return title;
+    public String getBoard_title() {
+        return board_title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setBoard_title(String board_title) {
+        this.board_title = board_title;
     }
 
     public String getBoard_writer() {
@@ -88,7 +88,7 @@ public class Daily implements java.io.Serializable {
         return board_date;
     }
 
-    public void setBoard_date(Date bOARD_DATE) {
+    public void setBoard_date(Date board_date) {
         this.board_date = board_date;
     }
 
@@ -110,7 +110,7 @@ public class Daily implements java.io.Serializable {
 
     @Override
     public String toString() {
-        return "Daily [board_no=" + board_no + ", title=" + title + ", board_writer=" + board_writer
+        return "Daily [board_no=" + board_no + ", board_title=" + board_title + ", board_writer=" + board_writer
                 + ", board_content=" + board_content + ", board_old_file=" + board_old_file + ", board_new_file="
                 + board_new_file + ", board_date=" + board_date + ", board_count=" + board_count + ", like_count="
                 + like_count + "]";

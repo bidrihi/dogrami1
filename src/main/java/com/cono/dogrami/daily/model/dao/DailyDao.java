@@ -1,6 +1,10 @@
 package com.cono.dogrami.daily.model.dao;
 
 import com.cono.dogrami.daily.model.vo.Daily;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,9 +15,14 @@ public class DailyDao {
     @Autowired
     private SqlSessionTemplate session;
 
+	public ArrayList<Daily> selectList() {
+	List<Daily> list = session.selectList("dailyboardMapper.selectList");
+		return (ArrayList<Daily>)list;
+	}
+    
 
     public int selectListCount() {
-        return session.selectOne("dailyboardMapper.selectListCount");
+        return 0;
     }
 
 

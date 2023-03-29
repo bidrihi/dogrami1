@@ -2,6 +2,9 @@ package com.cono.dogrami.daily.model.service;
 
 import com.cono.dogrami.daily.model.dao.DailyDao;
 import com.cono.dogrami.daily.model.vo.Daily;
+
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +12,11 @@ import org.springframework.stereotype.Service;
 public class DailyServiceImpl implements DailyService {
     @Autowired
     private DailyDao dailyDao;
+    
+	@Override
+	public ArrayList<Daily> selectList() {
+		return dailyDao.selectList();
+	}
 
     @Override
     public int selectListCount() {
@@ -39,6 +47,8 @@ public class DailyServiceImpl implements DailyService {
     public int deleteDailyBoard(Daily daily) {
         return 0;
     }
+
+
 
 
 }
