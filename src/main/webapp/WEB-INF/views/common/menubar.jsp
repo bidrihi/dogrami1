@@ -55,7 +55,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
                                 <a class="dropdown-item" href="#">애견 훈련소</a>
-                                <a class="dropdown-item" href="#">동물병원</a>
+                                <a class="dropdown-item" href="${ pageContext.servletContext.contextPath }/hplist3.do">동물병원</a>
                                 <a class="dropdown-item" href="#">애견미용실</a>
                                 <a class="dropdown-item" href="#">장례업체</a>
                             </div>

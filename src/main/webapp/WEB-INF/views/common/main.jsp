@@ -407,4 +407,3 @@
 </footer>
 <!--footer end-->
 
-<!-- THEME JAVASCRIPT FILES
