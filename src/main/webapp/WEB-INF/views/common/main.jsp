@@ -1,245 +1,410 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" errorPage="error.jsp" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>first</title>
-<style type="text/css">
-div.lineA {
-	height: 100px;
-	border: 1px solid gray;
-	float: left;
-	position: relative;
-	left: 100px;
-	margin: 5px;
-	padding: 5px;
-}
-div#banner {
-	width: 650px;
-	padding: 0;
-}
-div#banner img {
-	margin: 0;
-	padding: 0;
-	width: 650px;
-	height: 110px;
-}
-div#loginBox {
-	width: 274px;
-	font-size: 9pt;
-	text-align: left;
-	padding-left: 20px;
-}
-div#loginBox button {
-	width: 250px;
-	height: 35px;
-	background-color: navy;
-	color: white;
-	margin-top: 10px;
-	margin-bottom: 15px;
-	font-size: 14pt;
-	font-weight: bold;
-}
-section {
-	position: relative;
-	left: 100px;
-}
-section > div {
-	width: 360px;
-	background-color: #ccffff;
-}
-section div table {
-	width: 350px;
-	background: white;
-}
-</style>
-<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.3.min.js"></script>
-<script type="text/javascript">
-	function movePage(){
-		//버튼 클릭하면, 로그인 페이지로 이동하는 컨트롤러를 요청함
-		location.href = "loginPage.do";
-	}
-	
-	$(function(){
-		/* 주기적으로 시간 간격을 두고 자동 실행되게 하려면 
-			자바스크립트 내장함수 
-			setInterval(실행시킬함수명, 시간밀리초);
-			사용하면 됨
-			실행시킬함수명 대신 콜백함수 function(){} 사용가능
-		*/
-		
-		//최근 공지글 5개 출력되게 함 : ajax 사용
-		//body table(#newnotice)에 출력시킬 문장에 대한 문자열 준비
-		var values = $('#newnotice').html();
-		console.log("values : " + values);
-		$.ajax({
-			url: "ntop5.do",
-			type: "post",
-			dataType: "json",
-			success: function(data){
-				console.log("success : " + data);  //Object 로 출력
-				
-				//받은 object => string 으로 바꿈
-				var jsonStr = JSON.stringify(data);
-				//string => json 객체로 바꿈
-				var json = JSON.parse(jsonStr);
-				
-				//for in 문 : 
-				//인덱스 변수를 0에서 자동 1씩 증가시키는 루프문
-				for(var i in json.list){
-					values += "<tr><td>" + json.list[i].noticeno
-							+ "</td><td><a href='ndetail.do?noticeno="
-							+ json.list[i].noticeno + "'>" 
-							+ decodeURIComponent(
-									json.list[i].noticetitle).replace(/\+/gi, " ")
-							+ "</a></td><td>" + json.list[i].noticedate
-							+ "</td></tr>";
-				}  //for in
-				
-				$('#newnotice').html(values);
-			},
-			error: function(jqXHR, textStatus, errorThrown){
-				console.log("ntop5.do error : " + jqXHR
-						+ ", " + textStatus + ", "
-						+ errorThrown);
-			}
-		});  //ntop5 ajax
-		
-		//조회수 많은 인기 게시글(원글) 5개 조회 출력 처리 : ajax 사용
-		$.ajax({
-			url: "btop5.do",
-			type: "post",
-			dataType: "json",
-			success: function(data){
-				console.log("success : " + data);  //Object 로 출력
-				
-				//받은 object => string 으로 바꿈
-				var jsonStr = JSON.stringify(data);
-				//string => json 객체로 바꿈
-				var json = JSON.parse(jsonStr);
-				
-				//for in 문 : 
-				//인덱스 변수를 0에서 자동 1씩 증가시키는 루프문
-				var bvalues = $('#toplist').html();
-				for(var i in json.list){
-					<c:if test="${!empty sessionScope.loginMember}">
-					bvalues += "<tr><td>" + json.list[i].board_num
-							+ "</td><td><a href='bdetail.do?board_num="
-							+ json.list[i].board_num + "'>" 
-							+ decodeURIComponent(
-									json.list[i].board_title).replace(/\+/gi, " ")
-							+ "</a></td><td>" + json.list[i].board_readcount
-							+ "</td></tr>";
-					</c:if>
-					<c:if test="${empty sessionScope.loginMember}">
-					bvalues += "<tr><td>" + json.list[i].board_num
-							+ "</td><td>" 
-							+ decodeURIComponent(
-									json.list[i].board_title).replace(/\+/gi, " ")
-							+ "</td><td>" + json.list[i].board_readcount
-							+ "</td></tr>";
-					</c:if>
-				}  //for in
-				
-				$('#toplist').html(bvalues);
-			},
-			error: function(jqXHR, textStatus, errorThrown){
-				console.log("ntop5.do error : " + jqXHR
-						+ ", " + textStatus + ", "
-						+ errorThrown);
-			}
-		});
-		
-	});  //document ready
+    <meta charset="utf-8">
+    <title>Revolve - Personal Magazine blog Template</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-</script>
+    <!-- THEME CSS
+    ================================================== -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/resources/plugins/bootstrap/css/bootstrap.min.css">
+    <!-- Themify -->
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/resources/plugins/themify/css/themify-icons.css">
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/resources/plugins/slick-carousel/slick-theme.css">
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/plugins/slick-carousel/slick.css">
+    <!-- Slick Carousel -->
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/resources/plugins/owl-carousel/owl.carousel.min.css">
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/resources/plugins/owl-carousel/owl.theme.default.min.css">
+    <link rel="stylesheet"
+          href="${pageContext.servletContext.contextPath}/resources/plugins/magnific-popup/magnific-popup.css">
+    <!-- manin stylesheet -->
+    <link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/style.css">
 </head>
 <body>
-<%-- <%@ include file="menubar.jsp" %> --%>
-<c:import url="/WEB-INF/views/common/menubar.jsp" />
-<hr>
-<center>
-	<!-- 배너 이미지 표시 
-		절대경로 표기 : 
-		jstl 표기 : /
-		el 표기 : ${ pageContext.servletContext.contextPath }
-	-->
-	<div id="banner" class="lineA">
-		<img src="${ pageContext.servletContext.contextPath }/resources/images/photo2.jpg">
-	</div>
-	<!-- login 영역 표시 -->
-	<!-- 로그인 안 했을 때 : 세션 객체 안에 loginMember 가 없다면 -->
-	<c:if test="${ empty sessionScope.loginMember }">
-		<div id="loginBox" class="lineA">
-			first 사이트 방문을 환영합니다.<br>
-			<button onclick="movePage()">로그인 하세요.</button>
-			<br>
-			<a>아이디/비밀번호 조회</a> &nbsp; &nbsp;
-			<a href="${ pageContext.servletContext.contextPath }/enrollPage.do">회원가입</a>
-		</div>
-	</c:if>
-	<!-- 로그인 했을 때 : 일반회원인 경우 -->
-	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin ne 'Y' }">
-		<div id="loginBox" class="lineA">
-			${ loginMember.username } 님<br>
-			<button onclick="javascript:location.href='logout.do';">로그아웃</button>
-			<br>
-			<a>쪽지</a> &nbsp; &nbsp; <a>메일</a> &nbsp; &nbsp;
-			<!-- 마이페이지 클릭시 연결대상과 전달값 지정 -->
-			<c:url var="callMyInfo" value="/myinfo.do">
-				<c:param name="userid" value="${ sessionScope.loginMember.userid }" />
-			</c:url>
-			<a href="${ callMyInfo }">My Page</a>
-		</div>
-	</c:if>
+<c:import url="menubar.jsp"/>
 
-	<!-- 로그인 했을 때 : 관리자인 경우 -->
-	<c:if test="${ !empty sessionScope.loginMember and loginMember.admin eq 'Y' }">
-		<div id="loginBox" class="lineA">
-			${ loginMember.username } 님<br>
-			<button onclick="javascript:location.href='logout.do';">로그아웃</button>
-			<br>
-			<a>관리 페이지로 이동</a> &nbsp; &nbsp;
-			<!-- 마이페이지 클릭시 연결대상과 전달값 지정 -->
-			<c:url var="callMyInfo" value="/myinfo.do">
-				<c:param name="userid" value="${ loginMember.userid }" />
-			</c:url>
-			<a href="${ callMyInfo }">My Page</a>
-		</div>
-	</c:if>
-</center>
-<hr>
-<section>
-	<!-- 최근 등록 신규 공지글 5개 조회 출력 : ajax -->
-	<div style="float:left; border:1px solid navy; padding: 5px; margin:5px;">
-		<h4>최근 공지글</h4>
-		<table id="newnotice" border="1" cellspacing="0">
-			<tr>
-				<th>번호</th>
-				<th>제목</th>
-				<th>날짜</th>
-			</tr>
-		</table>
-	</div>
-	
-	<!-- 조회수 많은 게시글 5개 조회 출력 : ajax -->
-	<div style="float:left; border:1px solid navy; padding: 5px; margin:5px;">
-		<h4>인기 게시글</h4>
-		<table id="toplist" border="1" cellspacing="0">
-			<tr>
-				<th>번호</th>
-				<th>제목</th>
-				<th>조회수</th>
-			</tr>
-		</table>
-	</div>
+</header>
+<!--search overlay start-->
+<div class="search-wrap">
+    <div class="overlay">
+        <form action="#" class="search-form">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-9">
+                        <input type="text" class="form-control" placeholder="Search..."/>
+                    </div>
+                    <div class="col-md-2 col-3 text-right">
+                        <div class="search_toggle toggle-wrap d-inline-block">
+                            <i class="ti-close"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--search overlay end-->
+<section class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="category-item">
+                    <div class="category-img">
+                        <a href="#"><img src="${pageContext.servletContext.contextPath}/resources/images/cat/cat-4.jpg"
+                                         alt="" class="img-fluid w-100"></a>
+                    </div>
+                    <div class="content">
+                        <a href="#" class="text-color text-uppercase font-sm letter-spacing font-extra">lifestyle</a>
+                        <h4><a href="#">Managing your time In 3 easy steps</a></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="category-item">
+                    <div class="category-img">
+                        <a href="#"><img src="${pageContext.servletContext.contextPath}/resources/images/cat/cat-2.jpg"
+                                         alt="" class="img-fluid w-100"></a>
+                    </div>
+                    <div class="content">
+                        <a href="#" class="text-color text-uppercase font-sm letter-spacing font-extra">Fashion</a>
+                        <h4><a href="#">The Ultimate Summer Hat Guide</a></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="category-item">
+                    <div class="category-img">
+                        <a href="#"><img src="${pageContext.servletContext.contextPath}/resources/images/cat/cat-3.jpg"
+                                         alt="" class="img-fluid w-100"></a>
+                    </div>
+                    <div class="content">
+                        <a href="#" class="text-color text-uppercase font-sm letter-spacing font-extra">Travel</a>
+                        <h4><a href="#">The trip you should take this fall</a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
-<hr>
-<c:import url="/WEB-INF/views/common/footer.jsp" />
-</body>
-</html>
+
+<section class="section-padding pt-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="subscribe-home py-4 px-4 mb-5 bg-grey">
+                    <div class="form-group row align-items-center mb-0">
+                        <label for="colFormLabel" class="col-form-label col-sm-12 h4 col-lg-4">Subscribe for
+                            Newsletter</label>
+                        <div class="col-sm-6 col-lg-3">
+                            <input type="email" class="form-control mb-3 mb-lg-0" id="colFormLabel"
+                                   placeholder="Full Name">
+                        </div>
+                        <div class="col-sm-6 col-lg-3">
+                            <input type="email" class="form-control mb-3 mb-lg-0" id="colFormLabel2"
+                                   placeholder="Email Address">
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="#" class="btn btn-dark">Subscribe</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <article class="post-grid mb-5">
+                            <a class="post-thumb mb-4 d-block" href="blog-single.html">
+                                <img src="${pageContext.servletContext.contextPath}/resources/images/fashion/img-1.jpg"
+                                     alt="" class="img-fluid w-100">
+                            </a>
+                            <span class="letter-spacing cat-name font-extra text-uppercase font-sm text-color ">Travel</span>
+                            <h3 class="post-title mt-1"><a href="blog-single.html">Trip to California</a></h3>
+
+                            <span class="text-muted letter-spacing text-uppercase font-sm">September 15, 2019</span>
+                            <div class="post-content mt-4">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Magnam nesciunt architecto
+                                    quaerat
+                                    necessitatibus tenetur ratione eius numquam!</p>
+
+                                <a href="blog-single.html" class="btn btn-grey mt-3"> read more</a>
+                            </div>
+                        </article>
 
 
+                        <article class="post-grid mb-5">
+                            <a class="post-thumb mb-4 d-block" href="blog-single.html">
+                                <img src="${pageContext.servletContext.contextPath}/resources/images/fashion/img-lg-2.jpg"
+                                     alt="" class="img-fluid w-100">
+                            </a>
+                            <span class="letter-spacing cat-name font-extra text-uppercase font-sm text-color ">Lifestyle</span>
+                            <h3 class="post-title mt-1"><a href="blog-single.html">Ways To Reach Goals</a></h3>
 
+                            <span class="text-muted letter-spacing text-uppercase font-sm">August 12, 2019</span>
+                            <div class="post-content mt-4">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Magnam nesciunt architecto
+                                    quaerat
+                                    necessitatibus tenetur ratione eius numquam!</p>
+                                <a href="blog-single.html" class="btn btn-grey mt-3"> read more</a>
+                            </div>
+                        </article>
+
+                        <article class="post-grid mb-5">
+                            <a class="post-thumb mb-4 d-block" href="blog-single.html">
+                                <img src="${pageContext.servletContext.contextPath}/resources/images/fashion/img-7.jpg"
+                                     alt="" class="img-fluid w-100">
+                            </a>
+                            <span class="letter-spacing cat-name font-extra text-uppercase font-sm text-color ">fashion</span>
+                            <h3 class="post-title mt-1"><a href="blog-single.html">Bridal beauty span</a></h3>
+
+                            <span class="text-muted letter-spacing text-uppercase font-sm">march 2, 2019</span>
+                            <div class="post-content mt-4">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Magnam nesciunt architecto
+                                    quaerat
+                                    necessitatibus tenetur ratione eius numquam!</p>
+                                <a href="blog-single.html" class="btn btn-grey mt-3"> read more</a>
+                            </div>
+                        </article>
+
+                        <article class="post-grid mb-5">
+                            <span class="letter-spacing cat-name font-extra text-uppercase font-sm text-color ">Lifestyle</span>
+                            <h3 class="post-title mt-1"><a href="blog-single.html">Beautiful Arrangement of The
+                                Workplace</a></h3>
+
+                            <span class="text-muted letter-spacing text-uppercase font-sm">September 12, 2019</span>
+                            <div class="post-content mt-4">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Magnam nesciunt architecto
+                                    quaerat
+                                    necessitatibus tenetur ratione eius numquam!</p>
+                                <a href="blog-single.html" class="btn btn-grey mt-3"> read more</a>
+                            </div>
+                        </article>
+                    </div>
+
+
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <article class="post-grid mb-5">
+                            <a class="post-thumb mb-4 d-block" href="blog-single.html">
+                                <img src="${pageContext.servletContext.contextPath}/resources/images/fashion/img-lg-1.jpg"
+                                     alt="" class="img-fluid w-100">
+                            </a>
+                            <span class="letter-spacing cat-name font-extra text-uppercase font-sm text-color ">Explore</span>
+                            <h3 class="post-title mt-1"><a href="blog-single.html">Lets explore more</a></h3>
+
+                            <span class="text-muted letter-spacing text-uppercase font-sm">September 4, 2019</span>
+                            <div class="post-content mt-4">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Magnam nesciunt architecto
+                                    quaerat
+                                    necessitatibus tenetur ratione eius numquam!</p>
+                                <a href="blog-single.html" class="btn btn-grey mt-3"> read more</a>
+                            </div>
+                        </article>
+
+                        <article class="post-grid mb-5">
+                            <a class="post-thumb mb-4 d-block" href="blog-single.html">
+                                <img src="${pageContext.servletContext.contextPath}/resources/images/fashion/img-md-1.jpg"
+                                     alt="" class="img-fluid w-100">
+                            </a>
+                            <span class="letter-spacing cat-name font-extra text-uppercase font-sm text-color ">lifestyle</span>
+                            <h3 class="post-title mt-1"><a href="blog-single.html">Feel Like Home</a></h3>
+
+                            <span class="text-muted letter-spacing text-uppercase font-sm">September 15, 2019</span>
+                            <div class="post-content mt-4">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Magnam nesciunt architecto
+                                    quaerat
+                                    necessitatibus tenetur ratione eius numquam!</p>
+                                <a href="blog-single.html" class="btn btn-grey mt-3"> read more</a>
+                            </div>
+                        </article>
+
+                        <article class="post-grid mb-5">
+                            <a class="post-thumb mb-4 d-block" href="blog-single.html">
+                                <img src="${pageContext.servletContext.contextPath}/resources/images/fashion/img-lg-4.jpg"
+                                     alt="" class="img-fluid w-100">
+                            </a>
+                            <span class="letter-spacing cat-name font-extra text-uppercase font-sm text-color ">Travel</span>
+                            <h3 class="post-title mt-1"><a href="blog-single.html">What Type of Traveller Are You?</a>
+                            </h3>
+
+                            <span class="text-muted letter-spacing text-uppercase font-sm">September 15, 2019</span>
+                            <div class="post-content mt-4">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.Magnam nesciunt architecto
+                                    quaerat
+                                    necessitatibus tenetur ratione eius numquam!</p>
+                                <a href="blog-single.html" class="btn btn-grey mt-3"> read more</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="pagination mt-5 pt-4">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="#" class="active">1</a></li>
+                        <li class="list-inline-item"><a href="#">2</a></li>
+                        <li class="list-inline-item"><a href="#">3</a></li>
+                        <li class="list-inline-item"><a href="#" class="prev-posts"><i class="ti-arrow-right"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="sidebar sidebar-right">
+                    <div class="sidebar-wrap mt-5 mt-lg-0">
+                        <div class="sidebar-widget about mb-5 text-center p-3">
+                            <div class="about-author">
+                                <img src="${pageContext.servletContext.contextPath}/resources/images/author.jpg" alt=""
+                                     class="img-fluid">
+                            </div>
+                            <h4 class="mb-0 mt-4">Liam Mason</h4>
+                            <p>Travel Blogger</p>
+                            <p>I'm Liam, last year I decided to quit my job and travel the world. You can follow my
+                                journey on this
+                                blog!</p>
+                            <img src="${pageContext.servletContext.contextPath}/resources/images/liammason.png" alt=""
+                                 class="img-fluid">
+                        </div>
+
+                        <div class="sidebar-widget follow mb-5 text-center">
+                            <h4 class="text-center widget-title">Follow Me</h4>
+                            <div class="follow-socials">
+                                <a href="#"><i class="ti-facebook"></i></a>
+                                <a href="#"><i class="ti-twitter"></i></a>
+                                <a href="#"><i class="ti-instagram"></i></a>
+                                <a href="#"><i class="ti-youtube"></i></a>
+                                <a href="#"><i class="ti-pinterest"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-widget mb-5 ">
+                            <h4 class="text-center widget-title">Trending Posts</h4>
+
+                            <div class="sidebar-post-item-big">
+                                <a href="blog-single.html"><img
+                                        src="${pageContext.servletContext.contextPath}/resources/images/news/img-1.jpg"
+                                        alt=""
+                                        class="img-fluid"></a>
+                                <div class="mt-3 media-body">
+                                    <span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
+                                    <h4><a href="blog-single.html">Meeting With Clarissa, Founder Of Purple Conversation
+                                        App</a></h4>
+                                </div>
+                            </div>
+
+                            <div class="media border-bottom py-3 sidebar-post-item">
+                                <a href="#"><img class="mr-4"
+                                                 src="${pageContext.servletContext.contextPath}/resources/images/news/thumb-1.jpg"
+                                                 alt=""></a>
+                                <div class="media-body">
+                                    <span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
+                                    <h4><a href="blog-single.html">Thoughtful living in los Angeles</a></h4>
+                                </div>
+                            </div>
+
+                            <div class="media py-3 sidebar-post-item">
+                                <a href="#"><img class="mr-4"
+                                                 src="${pageContext.servletContext.contextPath}/resources/images/news/thumb-2.jpg"
+                                                 alt=""></a>
+                                <div class="media-body">
+                                    <span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
+                                    <h4><a href="blog-single.html">Vivamus molestie gravida turpis.</a></h4>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="sidebar-widget category mb-5">
+                            <h4 class="text-center widget-title">Catgeories</h4>
+                            <ul class="list-unstyled">
+                                <li class="align-items-center d-flex justify-content-between">
+                                    <a href="#">Innovation</a>
+                                    <span>14</span>
+                                </li>
+                                <li class="align-items-center d-flex justify-content-between">
+                                    <a href="#">Software</a>
+                                    <span>2</span>
+                                </li>
+                                <li class="align-items-center d-flex justify-content-between">
+                                    <a href="#">Social</a>
+                                    <span>10</span>
+                                </li>
+                                <li class="align-items-center d-flex justify-content-between">
+                                    <a href="#">Trends</a>
+                                    <span>5</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="sidebar-widget subscribe mb-5">
+                            <h4 class="text-center widget-title">Newsletter</h4>
+                            <input type="text" class="form-control" placeholder="Email Address">
+                            <a href="#" class="btn btn-primary d-block mt-3">Sign Up</a>
+                        </div>
+
+                        <div class="sidebar-widget sidebar-adv mb-5">
+                            <a href="#"><img
+                                    src="${pageContext.servletContext.contextPath}/resources/images/sidebar-banner3.png"
+                                    alt="" class="img-fluid w-100"></a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!--footer start-->
+<footer class="footer-section bg-grey">
+    <div class="instagram-photo-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4 class="text-center">Follow in Instagram</h4>
+                </div>
+            </div>
+
+            <div class="row no-gutters" id="instafeed">
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="mb-4">
+                    <h2 class="footer-logo">Revolve.</h2>
+                </div>
+                <ul class="list-inline footer-socials">
+                    <li class="list-inline-item"><a href="#"><i class="ti-facebook mr-2"></i>Facebook</a></li>
+                    <li class="list-inline-item"><a href="#"><i class="ti-twitter mr-2"></i>Twitter</a></li>
+                    <li class="list-inline-item"><a href="#"><i class="ti-linkedin mr-2"></i>Linkedin</a></li>
+                    <li class="list-inline-item"><a href="#"><i class="ti-pinterest mr-2"></i>Pinterest</a></li>
+                    <li class="list-inline-item"><a href="#"><i class="ti-github mr-2"></i>Github</a></li>
+                    <li class="list-inline-item"><a href="#"><i class="ti-instagram mr-2"></i>Instrgram</a></li>
+                    <li class="list-inline-item"><a href="#"><i class="ti-rss mr-2"></i>rss</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-12 text-center">
+                <p class="copyright">© Copyright 2019 - Revolve. All Rights Reserved. Distribution <a class="text-white"
+                                                                                                      href="https://themewagon.com">ThemeWagon.</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+<!--footer end-->
+
+<!-- THEME JAVASCRIPT FILES

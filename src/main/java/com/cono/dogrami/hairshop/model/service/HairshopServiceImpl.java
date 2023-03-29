@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service("hairshopService")
-public class HairshopServiceImpl {
+public class HairshopServiceImpl implements HairshopService {
     @Autowired
     private HairshopDao hairshopDao;
 }
