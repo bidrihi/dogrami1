@@ -20,24 +20,26 @@ public class DailyDao {
 		return (ArrayList<Daily>)list;
 	}
     
+	public Daily selectDailyBoard(int board_no) {
+		return session.selectOne("dailyboardMapper.selectDailyBoard",board_no);
+	}
+	
+	
+	public int updateDailyBoardReadcount(int board_no) {
+		return session.update("dailyboardMapper.updateDailyBoardReadcount",board_no);
+	}
 
+	public String selectnickname(int board_no) {
+		return session.selectOne("dailyboardMapper.selectnickname",board_no);
+	}
+	
     public int selectListCount() {
-        return 0;
-    }
-
-
-    public Daily selectDailyBoard(int board_no) {
-        return null;
-    }
-
-
-    public int updateDailyBoardReadcount(int board_no) {
-        return 0;
+        return session.selectOne("dailyboardMapper.selectListCount");
     }
 
 
     public int insertDailyBoard(Daily daily) {
-        return 0;
+        return session.insert("dailyboardMapper.insertDailyBoard",daily);
     }
 
 
@@ -49,6 +51,8 @@ public class DailyDao {
     public int deleteDailyBoard(Daily daily) {
         return 0;
     }
+
+
 
 
 }

@@ -18,24 +18,31 @@ public class DailyServiceImpl implements DailyService {
 		return dailyDao.selectList();
 	}
 
+	@Override
+	public Daily selectDailyBoard(int board_no) {
+		return dailyDao.selectDailyBoard(board_no);
+	}
+	
+	@Override
+	public int updateDailyBoardReadcount(int board_no) {
+		return dailyDao.updateDailyBoardReadcount(board_no);
+	}
+	
+	//조인해서 닉네임 가져오기
+	@Override
+	public String selectnickname(int board_no) {
+		return dailyDao.selectnickname(board_no);
+	}
+	
     @Override
     public int selectListCount() {
-        return 0;
+        return dailyDao.selectListCount();
     }
 
-    @Override
-    public Daily selectDailyBoard(int board_no) {
-        return null;
-    }
-
-    @Override
-    public int updateDailyBoardReadcount(int board_no) {
-        return 0;
-    }
 
     @Override
     public int insertDailyBoard(Daily daily) {
-        return 0;
+        return dailyDao.insertDailyBoard(daily);
     }
 
     @Override
@@ -47,6 +54,8 @@ public class DailyServiceImpl implements DailyService {
     public int deleteDailyBoard(Daily daily) {
         return 0;
     }
+
+
 
 
 
