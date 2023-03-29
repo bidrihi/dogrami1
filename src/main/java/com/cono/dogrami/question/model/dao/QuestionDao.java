@@ -1,12 +1,13 @@
-package com.cono.dogrami.infoshare.model.dao;
+package com.cono.dogrami.question.model.dao;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository("infoShareDao")
-public class InfoShareDao {
+@Repository("questionDao")
+public class QuestionDao {
 
     @Autowired
     private SqlSessionTemplate session;
+    
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository("dailyDao")
 public class DailyDao {
+	
     @Autowired
     private SqlSessionTemplate session;
     
