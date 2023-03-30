@@ -1,5 +1,7 @@
 package com.cono.dogrami.quiz.model.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +27,17 @@ public class QuizServiceImpl implements QuizService {
 	@Override
 	public int deleteQuiz(Quiz quiz) {
 		return quizDao.deleteQuiz(quiz);
+	}
+
+	@Override
+	public ArrayList<Quiz> selectAll() {
+		
+		return quizDao.selectAll();
+	}
+
+	@Override
+	public Quiz selectQuiz(int quiz_no) {
+
+		return quizDao.selectQuiz(quiz_no);
 	}
 }
