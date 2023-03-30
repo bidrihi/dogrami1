@@ -12,7 +12,7 @@ import com.cono.dogrami.quiz.model.vo.Quiz;
 public class QuizServiceImpl implements QuizService {
 
 	@Autowired  //dao 연결처리
-	QuizDao quizDao;
+	private QuizDao quizDao;
 	
 	@Override
 	public int insertQuiz(Quiz quiz) {
@@ -40,6 +40,4 @@ public class QuizServiceImpl implements QuizService {
 
 		return quizDao.selectQuiz(quiz_no);
 	}
-	
-	
 }

@@ -53,6 +53,7 @@ public class QuizController {
 		return  "";
 	}
 
+
 	@RequestMapping("qlist.do")
 	public String quizListMethod(Model model) {
 		ArrayList<Quiz> list = quizService.selectAll();
