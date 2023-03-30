@@ -13,12 +13,8 @@ public class DailyController {
     @Autowired
     private DailyService dailyService;
     
-    
-    
-    
-    
-    
-    
-    
+	//게시글 전체 목록보기 요청 처리용
+
+	
     
 }
