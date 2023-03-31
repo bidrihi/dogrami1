@@ -23,6 +23,7 @@ public class DailyServiceImpl implements DailyService {
 		return dailyDao.selectDailyBoard(board_no);
 	}
 	
+	//게시글 조회수 증가
 	@Override
 	public int updateDailyBoardReadcount(int board_no) {
 		return dailyDao.updateDailyBoardReadcount(board_no);
@@ -33,6 +34,25 @@ public class DailyServiceImpl implements DailyService {
 	public String selectnickname(int board_no) {
 		return dailyDao.selectnickname(board_no);
 	}
+	
+	//게시글 목록 검색바에서 제목으로 검색
+	@Override
+	public ArrayList<Daily> selectDailyBoardtitle(String keyword) {
+		return dailyDao.selectDailyBoardtitle(keyword);
+	}
+	
+	//게시글 목록 검색바에서 작성자로 검색
+	@Override
+	public ArrayList<Daily> selectDailyBoardwriter(String keyword) {
+		return dailyDao.selectDailyBoardwriter(keyword);
+	}
+
+	//게시글 목록 검색바에서 내용으로 검색
+	@Override
+	public ArrayList<Daily> selectDailyBoardcontent(String keyword) {
+		return dailyDao.selectDailyBoardcontent(keyword);
+	}
+
 	
     @Override
     public int selectListCount() {
@@ -47,13 +67,16 @@ public class DailyServiceImpl implements DailyService {
 
     @Override
     public int updateDailyBoard(Daily daily) {
-        return 0;
+        return dailyDao.updateDailyBoard(daily);
     }
 
     @Override
     public int deleteDailyBoard(Daily daily) {
         return 0;
     }
+
+
+
 
 
 
