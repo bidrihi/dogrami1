@@ -64,11 +64,11 @@ public class Funeral implements java.io.Serializable {
 		this.latitude = latitude;
 	}
 
-	public String getlongitude() {
+	public String getLongitude() {
 		return longitude;
 	}
 
-	public void setlongitude(String longitude) {
+	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}
 
@@ -78,11 +78,10 @@ public class Funeral implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "Hospital [name=" + name + ", address=" + address + ", address2=" + address2 + ", phone=" + phone
+		return "Funeral [name=" + name + ", address=" + address + ", address2=" + address2 + ", phone=" + phone
 				+ ", latitude=" + latitude + ", longitude=" + longitude + "]";
 	}
-    
-   
-    
+
+	
     
 }

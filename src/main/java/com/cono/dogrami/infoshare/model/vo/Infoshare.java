@@ -2,12 +2,13 @@ package com.cono.dogrami.infoshare.model.vo;
 
 import java.sql.Date;
 
-public class Infoshare implements java.io.Serializable {
+import com.cono.dogrami.member.model.vo.Member;
 
+public class Infoshare implements java.io.Serializable {
     private static final long serialVersionUID = 17L;
 
     private int board_no;
-    private String title;
+    private String board_title;
     private String board_writer;
     private String board_content;
     private String board_old_file;
@@ -15,23 +16,28 @@ public class Infoshare implements java.io.Serializable {
     private Date board_date;
     private int board_count;
     private int like_count;
-
+    private Member member;
+    
     public Infoshare() {
     }
 
-    public Infoshare(int board_no, String title, String board_writer, String board_content, String board_old_file,
-                     String board_new_file, Date board_date, int board_count, int like_count) {
-        super();
-        this.board_no = board_no;
-        this.title = title;
-        this.board_writer = board_writer;
-        this.board_content = board_content;
-        this.board_old_file = board_old_file;
-        this.board_new_file = board_new_file;
-        this.board_date = board_date;
-        this.board_count = board_count;
-        this.like_count = like_count;
-    }
+	public Infoshare(int board_no, String board_title, String board_writer, String board_content, String board_old_file,
+			String board_new_file, Date board_date, int board_count, int like_count, Member member) {
+		super();
+		this.board_no = board_no;
+		this.board_title = board_title;
+		this.board_writer = board_writer;
+		this.board_content = board_content;
+		this.board_old_file = board_old_file;
+		this.board_new_file = board_new_file;
+		this.board_date = board_date;
+		this.board_count = board_count;
+		this.like_count = like_count;
+		this.member = member;
+	}
+
+	
+
 
     public static long getSerialversionuid() {
         return serialVersionUID;
@@ -45,12 +51,12 @@ public class Infoshare implements java.io.Serializable {
         this.board_no = board_no;
     }
 
-    public String getTitle() {
-        return title;
+    public String getBoard_title() {
+        return board_title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setBoard_title(String board_title) {
+        this.board_title = board_title;
     }
 
     public String getBoard_writer() {
@@ -85,11 +91,11 @@ public class Infoshare implements java.io.Serializable {
         this.board_new_file = board_new_file;
     }
 
-    public Date getboard_date() {
+    public Date getBoard_date() {
         return board_date;
     }
 
-    public void setboard_date(Date board_date) {
+    public void setBoard_date(Date board_date) {
         this.board_date = board_date;
     }
 
@@ -109,11 +115,22 @@ public class Infoshare implements java.io.Serializable {
         this.like_count = like_count;
     }
 
-    @Override
-    public String toString() {
-        return "Infoshare [board_no=" + board_no + ", title=" + title + ", board_writer=" + board_writer
-                + ", board_content=" + board_content + ", board_old_file=" + board_old_file + ", board_new_file="
-                + board_new_file + ", board_count=" + board_count + ", like_count=" + like_count + "]";
-    }
+    public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	@Override
+	public String toString() {
+		return "Infoshare [board_no=" + board_no + ", board_title=" + board_title + ", board_writer=" + board_writer
+				+ ", board_content=" + board_content + ", board_old_file=" + board_old_file + ", board_new_file="
+				+ board_new_file + ", board_date=" + board_date + ", board_count=" + board_count + ", like_count="
+				+ like_count + ", member=" + member + "]";
+	}
+	
+   
 
 }

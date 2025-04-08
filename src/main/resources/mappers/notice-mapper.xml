@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="noticeMapper">
+
+    <resultMap type="Notice" id="resultNotice">
+        <id column="notice_no" property="notice_no"/>
+        <result column="notice_title" property="notice_title"/>
+        <result column="notice_writer" property="notice_writer"/>
+        <result column="notice_content" property="notice_content"/>
+        <result column="notice_old_file" property="notice_old_file"/>
+        <result column="notice_new_file" property="notice_new_file"/>
+        <result column="notice_date" property="notice_date"/>
+        <result column="notice_count" property="notice_count"/>
+        <association property="member" javaType="Member">
+            <result column="user_nick" property="user_nick"/>
+        </association>
+    </resultMap>
+
+    <resultMap type="Notice" id="NoticeResent">
+        <id column="notice_no" property="notice_no"/>
+        <result column="notice_title" property="notice_title"/>
+        <result column="notice_date" property="notice_date"/>
+    </resultMap>
+
+    <!-- 공지 리스트 페이징 처리 -->
+    <select id="selectList" parameterType="Paging" resultMap="resultNotice">
+        <![CDATA[
+        select *
+        from (select rownum rnum, NOTICE_NO, NOTICE_TITLE, USER_NICK, NOTICE_DATE, NOTICE_COUNT
+              from (select *
+                    from NOTICE
+                             inner join MEMBER on (NOTICE_WRITER = USER_ID)
+                    order by NOTICE_NO desc))
+        where rnum >= #{startRow}
+          and rnum <= #{endRow}
+        ]]>
+    </select>
+
+    <!-- 공지 상세보기 -->
+    <select id="selectNotice" parameterType="_int" resultMap="resultNotice">
+        select *
+        from (select *
+              from (select *
+                    from NOTICE
+                    inner join MEMBER on (NOTICE_WRITER = USER_ID)))
+        where NOTICE_NO = #{notice_no}
+    </select>
+
+    <!-- 공지 검색 -->
+    <select id="selectSearch" parameterType="Map" resultMap="resultNotice">
+        <![CDATA[
+        select *
+        from (select rownum rnum, NOTICE_NO, NOTICE_TITLE, USER_NICK, NOTICE_DATE, NOTICE_COUNT
+              from (select *
+                    from NOTICE
+                    inner join MEMBER on (NOTICE_WRITER = USER_ID)
+                    where ${action} like '%' || #{keyword} || '%'
+                    order by NOTICE_NO desc))
+        where rnum >= #{ paging.startRow }
+          and rnum <= #{ paging.endRow }
+        ]]>
+    </select>
+
+    <!-- 검색후 리스트 갯수출력 -->
+    <select id="selectListCountSearch" parameterType="Map" resultMap="resultNotice">
+        select *
+        from NOTICE
+        inner join MEMBER on (USER_ID = NOTICE_WRITER)
+        where ${action} like '%' || #{keyword} || '%'
+    </select>
+
+    <!-- 게시글 상세보기시 조회수 증가 -->
+    <update id="updateNoticeReadcount" parameterType="_int">
+        update NOTICE
+        set NOTICE_COUNT = NOTICE_COUNT + 1
+        where NOTICE_NO = #{notice_no}
+    </update>
+
+    <!-- 공지 작성 -->
+    <insert id="insertNotice" parameterType="Notice">
+        insert into NOTICE (notice_no, notice_title, notice_writer, notice_content, notice_old_file, notice_new_file, notice_date, notice_count)
+        values (NOTICE_SEQ.nextval, #{notice_title}, #{notice_writer}, #{notice_content}, #{notice_old_file}, #{notice_new_file}, sysdate, default)
+    </insert>
+
+    <!-- 총 공지 갯수 -->
+    <select id="selectListCount" resultType="_int">
+        select count(*)
+        from NOTICE
+    </select>
+
+    <!-- 공지 수정 -->
+    <update id="updateNotice" parameterType="Notice">
+        update NOTICE
+        set NOTICE_TITLE = #{notice_title}, NOTICE_CONTENT = #{notice_content}, NOTICE_DATE = sysdate
+        <if test="notice_old_file != null">
+            , NOTICE_OLD_FILE = #{notice_old_file}
+            , NOTICE_NEW_FILE = #{notice_new_file}
+        </if>
+        <if test="notice_old_file == null">
+            , NOTICE_OLD_FILE = null
+            , NOTICE_NEW_FILE = null
+        </if>
+        where NOTICE_NO = #{notice_no}
+    </update>
+
+    <!-- 공지 삭제 -->
+    <delete id="deleteNotice" parameterType="_int">
+        delete
+        from NOTICE
+        where NOTICE_NO = #{notice_no}
+    </delete>
+
+    <!-- footer 최근 공지 5개 출력 -->
+    <select id="selectNewTop5" resultMap="NoticeResent">
+        <![CDATA[
+        select *
+        from (select rownum rnum, NOTICE_NO, NOTICE_TITLE, NOTICE_DATE
+              from (select *
+                    from NOTICE
+                    order by NOTICE_DATE desc, NOTICE_NO desc))
+        where rnum >= 1
+          and rnum <= 5
+        ]]>
+    </select>
+</mapper>

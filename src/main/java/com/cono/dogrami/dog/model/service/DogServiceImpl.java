@@ -37,4 +37,10 @@ public class DogServiceImpl implements DogService {
 	public int deleteDog(Dog dog_type) {
 		return dogDao.deleteDog(dog_type);
 	}
+
+	@Override
+	public ArrayList<Dog> selectDogList(Dog dog) {
+		
+		return dogDao.selectDoglist(dog);
+	}
 }

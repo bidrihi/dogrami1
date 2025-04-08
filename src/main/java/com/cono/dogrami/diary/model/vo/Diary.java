@@ -2,27 +2,31 @@ package com.cono.dogrami.diary.model.vo;
 
 import java.sql.Date;
 
+import com.cono.dogrami.member.model.vo.Member;
+
 public class Diary implements java.io.Serializable {
-	private static final long serialVersionUID = 23L;
+    private static final long serialVersionUID = 23L;
 
-	private int board_no;
-	private String title;
-	private String board_writer;
-	private String board_content;
-	private String board_old_file;
-	private String board_new_file;
-	private Date board_date;
-	private int board_count;
-	private int like_count;
-	private char open;
+    private int board_no;
+    private String board_title;
+    private String board_writer;
+    private String board_content;
+    private String board_old_file;
+    private String board_new_file;
+    private Date board_date;
+    private int board_count;
+    private int like_count;
+    private String open;
+    private Member member;
+    
+    public Diary() {
+    }
 
-	public Diary() {}
-
-	public Diary(int board_no, String title, String board_writer, String board_content, String board_old_file,
-				 String board_new_file, Date board_date, int board_count, int like_count, char open) {
+	public Diary(int board_no, String board_title, String board_writer, String board_content, String board_old_file,
+			String board_new_file, Date board_date, int board_count, int like_count, String open, Member member) {
 		super();
 		this.board_no = board_no;
-		this.title = title;
+		this.board_title = board_title;
 		this.board_writer = board_writer;
 		this.board_content = board_content;
 		this.board_old_file = board_old_file;
@@ -31,6 +35,7 @@ public class Diary implements java.io.Serializable {
 		this.board_count = board_count;
 		this.like_count = like_count;
 		this.open = open;
+		this.member = member;
 	}
 
 	public int getBoard_no() {
@@ -41,12 +46,12 @@ public class Diary implements java.io.Serializable {
 		this.board_no = board_no;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getBoard_title() {
+		return board_title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setBoard_title(String board_title) {
+		this.board_title = board_title;
 	}
 
 	public String getBoard_writer() {
@@ -85,7 +90,7 @@ public class Diary implements java.io.Serializable {
 		return board_date;
 	}
 
-	public void setBoard_date(Date bOARD_DATE) {
+	public void setBoard_date(Date board_date) {
 		this.board_date = board_date;
 	}
 
@@ -105,12 +110,20 @@ public class Diary implements java.io.Serializable {
 		this.like_count = like_count;
 	}
 
-	public char getOpen() {
+	public String getOpen() {
 		return open;
 	}
 
-	public void setOpen(char open) {
+	public void setOpen(String open) {
 		this.open = open;
+	}
+
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
 	}
 
 	public static long getSerialversionuid() {
@@ -119,11 +132,10 @@ public class Diary implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "Diary [board_no=" + board_no + ", title=" + title + ", board_writer=" + board_writer
+		return "Diary [board_no=" + board_no + ", board_title=" + board_title + ", board_writer=" + board_writer
 				+ ", board_content=" + board_content + ", board_old_file=" + board_old_file + ", board_new_file="
 				+ board_new_file + ", board_date=" + board_date + ", board_count=" + board_count + ", like_count="
-				+ like_count + ", open=" + open + "]";
+				+ like_count + ", open=" + open + ", member=" + member + "]";
 	}
-
 
 }

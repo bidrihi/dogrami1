@@ -2,25 +2,28 @@ package com.cono.dogrami.questionreply.model.vo;
 
 import java.sql.Date;
 
-public class QuestionReply implements java.io.Serializable{
-	
-	private static final long serialVersionUID = 22L;
-	
-	private int ref_no;
-	private int board_no;
-	private String ref_writer;
-	private String ref_content;
-	private Date ref_date;
-	
-	public QuestionReply() {}
+import com.cono.dogrami.member.model.vo.Member;
 
-	public QuestionReply(int ref_no, int board_no, String ref_writer, String ref_content, Date ref_date) {
+public class QuestionReply implements java.io.Serializable {
+    private static final long serialVersionUID = 22L;
+
+    private int ref_no;
+    private int board_no;
+    private String ref_writer;
+    private String ref_content;
+    private Date ref_date;
+    private Member member;
+    
+    public QuestionReply() {}
+
+	public QuestionReply(int ref_no, int board_no, String ref_writer, String ref_content, Date ref_date, Member member) {
 		super();
 		this.ref_no = ref_no;
 		this.board_no = board_no;
 		this.ref_writer = ref_writer;
 		this.ref_content = ref_content;
 		this.ref_date = ref_date;
+		this.member = member;
 	}
 
 	public int getRef_no() {
@@ -63,6 +66,14 @@ public class QuestionReply implements java.io.Serializable{
 		this.ref_date = ref_date;
 	}
 
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -70,7 +81,9 @@ public class QuestionReply implements java.io.Serializable{
 	@Override
 	public String toString() {
 		return "QuestionReply [ref_no=" + ref_no + ", board_no=" + board_no + ", ref_writer=" + ref_writer
-				+ ", ref_content=" + ref_content + ", ref_date=" + ref_date + "]";
+				+ ", ref_content=" + ref_content + ", ref_date=" + ref_date + ", member=" + member + "]";
 	}
+    
 	
+
 }

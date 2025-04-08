@@ -15,42 +15,31 @@ public class CareReplyServiceImpl implements CareReplyService{
 	private CareReplyDao careReplyDao;
 
 	@Override
-	public ArrayList<CareReply> SelectList() {
-		return null;
+	public ArrayList<CareReply> selectList(int board_no) {
+		return careReplyDao.selectList(board_no);
+	}
+	@Override
+	public int insertReply(CareReply careReply) {
+		return careReplyDao.insertReply(careReply);
 	}
 
 	@Override
-	public ArrayList<CareReply> SelectNick(String keyword) {
-		return null;
+	public int updateReply(CareReply careReply) {
+		return careReplyDao.updateReply(careReply);
 	}
 
 	@Override
-	public ArrayList<CareReply> SelectTtile(String keyword) {
-		return null;
+	public int deleteReply(int ref_no) {
+		return careReplyDao.deleteReply(ref_no);
+	}
+	@Override
+	public int selectCareReplyCount(int board_no) {
+		return careReplyDao.selectCareReplyCount(board_no);
+	}
+	
+	@Override
+	public String selectnickname(int ref_no) {
+		return careReplyDao.selectnickname(ref_no);
 	}
 
-	@Override
-	public ArrayList<CareReply> SelectLocation(String keyword) {
-		return null;
-	}
-
-	@Override
-	public int insertBoard(CareReply reply) {
-		return 0;
-	}
-
-	@Override
-	public int updateBoard(CareReply reply) {
-		return 0;
-	}
-
-	@Override
-	public int deleteBoard(int rep_no) {
-		return 0;
-	}
-
-	@Override
-	public CareReply SelectOne(int rep_no) {
-		return null;
-	}
 }

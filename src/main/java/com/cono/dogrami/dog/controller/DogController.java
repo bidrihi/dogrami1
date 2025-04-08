@@ -1,16 +1,18 @@
 package com.cono.dogrami.dog.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.cono.dogrami.dog.model.service.DogService;
 import com.cono.dogrami.dog.model.vo.Dog;
+import com.cono.dogrami.randomquiz.model.vo.RandomQuiz;
 
 @Controller
 public class DogController {
@@ -19,10 +21,31 @@ public class DogController {
 	@Autowired
 	private DogService dogService;
 
-	// 성향테스트 페이지 내보내기용
-//	public String moveTestPage() {
-//	}
-//
+//	 성향테스트 페이지 내보내기용
+	@RequestMapping("doglist.do")
+	public String moveTestPage() {
+		return "dogtest/dogtest";
+	}
+	
+	@RequestMapping(value="dogresult.do" , method = RequestMethod.POST)
+	public String dogTest(Dog dog , Model model) {
+		
+		ArrayList<Dog> list =dogService.selectDogList(dog);
+		
+		if(list != null  && list.size() > 0 ) {
+			model.addAttribute("list",list);
+			
+			return "dogtest/dogresult";
+		}else {
+			
+			return "dogtest/dognresult";
+		}
+		
+	}
+	
+	
+	
+
 //	// 품종 수정페이지 내보내기용
 //	public String moveDogUpdatePage(@RequestParam("dog_type") String dog_type, Model model) {
 //	}

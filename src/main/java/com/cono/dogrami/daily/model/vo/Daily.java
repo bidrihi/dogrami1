@@ -2,6 +2,8 @@ package com.cono.dogrami.daily.model.vo;
 
 import java.sql.Date;
 
+import com.cono.dogrami.member.model.vo.Member;
+
 public class Daily implements java.io.Serializable {
     private static final long serialVersionUID = 19L;
 
@@ -14,23 +16,28 @@ public class Daily implements java.io.Serializable {
     private Date board_date;
     private int board_count;
     private int like_count;
+    private Member member;
     
     public Daily() {
     }
 
-    public Daily(int board_no, String board_title, String board_writer, String board_content, String board_old_file,
-                 String board_new_file, Date board_date, int board_count, int like_count) {
-        super();
-        this.board_no = board_no;
-        this.board_title = board_title;
-        this.board_writer = board_writer;
-        this.board_content = board_content;
-        this.board_old_file = board_old_file;
-        this.board_new_file = board_new_file;
-        this.board_date = board_date;
-        this.board_count = board_count;
-        this.like_count = like_count;
-    }
+	public Daily(int board_no, String board_title, String board_writer, String board_content, String board_old_file,
+			String board_new_file, Date board_date, int board_count, int like_count, Member member) {
+		super();
+		this.board_no = board_no;
+		this.board_title = board_title;
+		this.board_writer = board_writer;
+		this.board_content = board_content;
+		this.board_old_file = board_old_file;
+		this.board_new_file = board_new_file;
+		this.board_date = board_date;
+		this.board_count = board_count;
+		this.like_count = like_count;
+		this.member = member;
+	}
+
+	
+
 
     public static long getSerialversionuid() {
         return serialVersionUID;
@@ -108,12 +115,22 @@ public class Daily implements java.io.Serializable {
         this.like_count = like_count;
     }
 
-    @Override
-    public String toString() {
-        return "Daily [board_no=" + board_no + ", board_title=" + board_title + ", board_writer=" + board_writer
-                + ", board_content=" + board_content + ", board_old_file=" + board_old_file + ", board_new_file="
-                + board_new_file + ", board_date=" + board_date + ", board_count=" + board_count + ", like_count="
-                + like_count + "]";
-    }
+    public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+	@Override
+	public String toString() {
+		return "Daily [board_no=" + board_no + ", board_title=" + board_title + ", board_writer=" + board_writer
+				+ ", board_content=" + board_content + ", board_old_file=" + board_old_file + ", board_new_file="
+				+ board_new_file + ", board_date=" + board_date + ", board_count=" + board_count + ", like_count="
+				+ like_count + ", member=" + member + "]";
+	}
+	
+   
 
 }

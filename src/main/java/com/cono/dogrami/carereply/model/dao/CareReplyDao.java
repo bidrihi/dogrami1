@@ -1,6 +1,7 @@
 package com.cono.dogrami.carereply.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,35 +15,32 @@ public class CareReplyDao {
 	@Autowired
 	private SqlSessionTemplate session;
 	
-	public ArrayList<CareReply> SelectList() {
-		return null;
+	public ArrayList<CareReply> selectList(int board_no) {
+		List<CareReply> list = session.selectList("carereplyMapper.selectList",board_no);
+		return (ArrayList<CareReply>)list;
 	}
 
-	public ArrayList<CareReply> SelectNick(String keyword) {
-		return null;
+
+	public int insertReply(CareReply careReply) {
+		return session.insert("carereplyMapper.insertReply", careReply);
 	}
 
-	public ArrayList<CareReply> SelectTtile(String keyword) {
-		return null;
+	public int updateReply(CareReply careReply) {
+		return session.update("carereplyMapper.updateReply", careReply);
 	}
 
-	public ArrayList<CareReply> SelectLocation(String keyword) {
-		return null;
+	public int deleteReply(int ref_no) {
+		return session.delete("carereplyMapper.deleteReply", ref_no);
 	}
 
-	public int insertBoard(CareReply reply) {
-		return 0;
+
+	public String selectnickname(int ref_no) {
+		return session.selectOne("carereplyMapper.selectnickname",ref_no);
 	}
 
-	public int updateBoard(CareReply reply) {
-		return 0;
+
+	public int selectCareReplyCount(int board_no) {
+		return session.selectOne("carereplyMapper.selectCareReplyCount", board_no);
 	}
 
-	public int deleteBoard(int rep_no) {
-		return 0;
-	}
-
-	public CareReply SelectOne(int rep_no) {
-		return null;
-	}
 }

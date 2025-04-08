@@ -10,4 +10,5 @@ public interface DogService {
 	int insertDog(Dog dog);
 	int updateDog(Dog dog);
 	int deleteDog(Dog dog_type);
+	ArrayList<Dog> selectDogList(Dog dog);
 }

@@ -1,20 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE configuration PUBLIC
-"-//mybatis.org//DTD Config 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-config.dtd">
+        "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<settings>
-		<setting name="jdbcTypeForNull" value="NULL"/>
-		<setting name="cacheEnabled" value="false"/>
-	</settings>
+    <settings>
+        <setting name="jdbcTypeForNull" value="NULL"/>
+        <setting name="cacheEnabled" value="false"/>
+    </settings>
 
-	<!-- 매퍼에서 사용할 vo 클래스에 대한 줄임말 선언 -->
-	<typeAliases>		
+    <!-- 매퍼에서 사용할 vo 클래스에 대한 줄임말 선언 -->
+    <typeAliases>
+        <typeAlias type="com.cono.dogrami.member.model.vo.Member" alias="Member"/>
+        <typeAlias type="com.cono.dogrami.common.Paging" alias="Paging"/>
 
-	</typeAliases>
-	
-	<!-- mapper : 실행할 쿼리문만 별도로 작성하는 파일을 말함 -->
-	<mappers>
+        <typeAlias type="com.cono.dogrami.careboard.model.vo.CareBoard" alias="CareBoard"/>
+        <typeAlias type="com.cono.dogrami.carereply.model.vo.CareReply" alias="CareReply"/>
+        <typeAlias type="com.cono.dogrami.careboard.model.vo.CareLike" alias="CareLike"/>
+        <typeAlias type="com.cono.dogrami.cafe.model.vo.Cafe" alias="Cafe"/>
+        <typeAlias type="com.cono.dogrami.guesthouse.model.vo.Guesthouse" alias="Guesthouse"/>
+        <typeAlias type="com.cono.dogrami.hotel.model.vo.Hotel" alias="Hotel"/>
+        <typeAlias type="com.cono.dogrami.restaurant.model.vo.Restaurant" alias="Restaurant"/>
 
-	</mappers>
+        <typeAlias type="com.cono.dogrami.placeboard.model.vo.PlaceBoard" alias="PlaceBoard"/>
+        <typeAlias type="com.cono.dogrami.placereply.model.vo.PlaceReply" alias="PlaceReply"/>
+        <typeAlias type="com.cono.dogrami.placeboard.model.vo.PlaceLike" alias="PlaceLike"/>
+        <typeAlias type="com.cono.dogrami.funeral.model.vo.Funeral" alias="Funeral"/>
+        <typeAlias type="com.cono.dogrami.hairshop.model.vo.Hairshop" alias="Hairshop"/>
+        <typeAlias type="com.cono.dogrami.hospital.model.vo.Hospital" alias="Hospital"/>
+        <typeAlias type="com.cono.dogrami.trainning.model.vo.Trainning" alias="Trainning"/>
+
+        <typeAlias type="com.cono.dogrami.dog.model.vo.Dog" alias="Dog" />
+        <typeAlias type="com.cono.dogrami.contest.model.vo.Contest" alias="Contest" />
+        <typeAlias type="com.cono.dogrami.contest.model.vo.ContestLike" alias="ContestLike" />
+        <typeAlias type="com.cono.dogrami.randomquiz.model.vo.RandomQuiz" alias="RandomQuiz" />
+
+        <typeAlias type="com.cono.dogrami.daily.model.vo.Daily" alias="Daily"/>
+        <typeAlias type="com.cono.dogrami.dailyreply.model.vo.DailyReply" alias="DailyReply"/>
+        <typeAlias type="com.cono.dogrami.daily.model.vo.DailyLike" alias="DailyLike"/>
+        <typeAlias type="com.cono.dogrami.diary.model.vo.Diary" alias="Diary" />
+        <typeAlias type="com.cono.dogrami.diaryreply.model.vo.DiaryReply" alias="DiaryReply" />
+        <typeAlias type="com.cono.dogrami.diary.model.vo.DiaryLike" alias="DiaryLike"/>
+        <typeAlias type="com.cono.dogrami.infoshare.model.vo.Infoshare" alias="Infoshare" />
+        <typeAlias type="com.cono.dogrami.infosharereply.model.vo.InfoshareReply" alias="InfoshareReply" />
+        <typeAlias type="com.cono.dogrami.infoshare.model.vo.InfoshareLike" alias="InfoshareLike"/>
+        <typeAlias type="com.cono.dogrami.question.model.vo.Question" alias="Question" />
+        <typeAlias type="com.cono.dogrami.questionreply.model.vo.QuestionReply" alias="QuestionReply" />
+        <typeAlias type="com.cono.dogrami.question.model.vo.QuestionLike" alias="QuestionLike"/>
+
+        <typeAlias type="com.cono.dogrami.notice.model.vo.Notice" alias="Notice"/>
+        <typeAlias type="com.cono.dogrami.shop.model.vo.Shop" alias="Shop"/>
+    </typeAliases>
+
+    <!-- mapper : 실행할 쿼리문만 별도로 작성하는 파일을 말함 -->
+    <mappers>
+        <mapper resource="mappers/member-mapper.xml"/>
+
+        <mapper resource="mappers/careboard-mapper.xml"/>
+        <mapper resource="mappers/carereply-mapper.xml"/>
+        <mapper resource="mappers/cafe-mapper.xml"/>
+        <mapper resource="mappers/guesthouse-mapper.xml"/>
+        <mapper resource="mappers/hotel-mapper.xml"/>
+        <mapper resource="mappers/restaurant-mapper.xml"/>
+
+        <mapper resource="mappers/placeboard-mapper.xml"/>
+        <mapper resource="mappers/placereply-mapper.xml"/>
+        <mapper resource="mappers/funeral-mapper.xml"/>
+        <mapper resource="mappers/hairshop-mapper.xml"/>
+        <mapper resource="mappers/hospital-mapper.xml"/>
+        <mapper resource="mappers/trainning-mapper.xml"/>
+
+        <mapper resource="mappers/dog-mapper.xml" />
+        <mapper resource="mappers/contest-mapper.xml" />
+        <mapper resource="mappers/randomQuiz-mapper.xml" />
+
+        <mapper resource="mappers/dailyboard-mapper.xml" />
+        <mapper resource="mappers/dailyreply-mapper.xml" />
+        <mapper resource="mappers/diaryboard-mapper.xml" />
+        <mapper resource="mappers/diaryreply-mapper.xml" />
+        <mapper resource="mappers/infoshareboard-mapper.xml" />
+        <mapper resource="mappers/infosharereply-mapper.xml" />
+        <mapper resource="mappers/questionboard-mapper.xml" />
+        <mapper resource="mappers/questionreply-mapper.xml" />
+
+        <mapper resource="mappers/notice-mapper.xml"/>
+        <mapper resource="mappers/shop-mapper.xml"/>
+    </mappers>
 </configuration>

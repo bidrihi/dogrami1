@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="contestMapper">
+
+    <resultMap type="Contest" id="resultContest">
+        <id property="contest_no" column="contest_no"/>
+        <result property="user_id" column="user_id"/>
+        <result property="contest_content" column="contest_content"/>
+        <result property="contest_title" column="contest_title"/>
+        <result property="contest_date" column="contest_date"/>
+        <result property="contest_count" column="contest_count"/>
+        <result property="like_count" column="like_count"/>
+        <result property="contest_oldfile" column="contest_oldfile"/>
+        <result property="contest_newfile" column="contest_newfile"/>
+        <result property="grade_first" column="grade_first"/>
+        <association property="member" javaType="Member">
+            <result column="user_nick" property="user_nick"/>
+        </association>
+    </resultMap>
+
+    <resultMap type="ContestLike" id="resultContestLike">
+        <id property="contest_no" column="contest_no"/>
+        <id property="user_id" column="user_id"/>
+    </resultMap>
+
+    <resultMap type="Contest" id="ContestTop">
+        <id column="contest_no" property="contest_no"/>
+        <result column="contest_title" property="contest_title"/>
+        <result column="contest_content" property="contest_content"/>
+        <result column="contest_newfile" property="contest_newfile"/>
+    </resultMap>
+
+    <resultMap type="Contest" id="ContestResent">
+        <id column="contest_no" property="contest_no"/>
+        <result column="contest_title" property="contest_title"/>
+        <result column="like_count" property="like_count"/>
+        <result column="contest_date" property="contest_date"/>
+    </resultMap>
+
+    <!-- 게시글 리스트 페이징처리 -->
+    <select id="selectList" parameterType="Paging" resultMap="resultContest">
+		<![CDATA[
+        select *
+        from (select rownum rnum, contest_no, contest_title, user_nick, contest_date, contest_count, contest_content
+              from (select *
+                    from contest
+                             inner join member
+                                        on (member.user_id = contest.user_id)
+                    order by contest_no desc))
+        where rnum >= #{ startRow }
+          and rnum <= #{ endRow }
+        ]]>
+	</select>
+
+    <select id="selectLike" parameterType="Contest" resultMap="resultContestLike">
+        select *
+        from contestlike
+        where user_id = #{user_id}
+          and contest_no = #{contest_no}
+    </select>
+
+    <!-- 게시글 상세보기 -->
+    <select id="selectContestBoard" parameterType="_int" resultMap="resultContest">
+        select *
+        from (select *
+              from (select *
+                    from contest
+                             inner join member
+                                        on (member.user_id = contest.user_id)))
+        where contest_no = #{contest_no}
+    </select>
+
+    <!-- 닉네임 검색용 -->
+    <select id="selectnickname" parameterType="_int" resultType="String">
+        select *
+        from contest
+                 inner join member
+                            on member.user_id = contest.user_id
+        where contest_no = #{contest_no}
+    </select>
+
+    <select id="selectSearch" parameterType="Map" resultMap="resultContest">
+		<![CDATA[
+        select *
+        from (select rownum rnum,
+                     user_id,
+                     CONTEST_NO,
+                     CONTEST_TITLE,
+                     CONTEST_CONTENT,
+                     CONTEST_DATE,
+                     CONTEST_COUNT,
+                     LIKE_COUNT,
+                     CONTEST_OLDFILE,
+                     CONTEST_NEWFILE,
+                     GRADE_FIRST
+              from (select *
+                    from contest
+                    where ${action} like '%' || #{keyword} || '%'))
+        where rnum >= #{ page.startRow }
+          and rnum <= #{ page.endRow }
+        ]]>
+	</select>
+
+    <select id="selectListCountSearch" parameterType="Map" resultMap="resultContest">
+        select *
+        from contest
+                 inner join member
+                            on (member.user_id = contest.user_id)
+        where ${action} like '%' || #{keyword} || '%'
+    </select>
+
+    <!-- 게시글 상세보기시 조회수 증가 -->
+    <update id="updateContestBoardReadcount" parameterType="_int">
+        update contest
+        set contest_COUNT = contest_COUNT + 1
+        where contest_no = #{contest_no}
+    </update>
+
+    <!-- 게시글 작성 -->
+    <insert id="insertContestBoard" parameterType="Contest">
+        insert into contest(user_id, contest_no, contest_title, contest_content, contest_date, contest_count,
+                            like_count, contest_oldfile, contest_newfile, grade_first)
+        values (#{user_id}, CONTEST_SEQ.nextval, #{contest_title}, #{contest_content}, sysdate, default, default,
+                #{contest_oldfile},
+                #{contest_newfile}, 'N')
+    </insert>
+
+    <insert id="insertLike" parameterType="Contest">
+        insert into contestlike
+        values (#{user_id}, #{contest_no})
+    </insert>
+
+
+    <!-- 총 게시글 갯수 -->
+    <select id="selectListCount" resultType="_int">
+        select count(*)
+        from contest
+    </select>
+
+    <!-- 게시글 수정 -->
+    <update id="updateContestBoard" parameterType="Contest">
+        update contest
+        set contest_title = #{contest_title}, contest_content = #{contest_content}, contest_date = sysdate
+        <if test="contest_oldfile != null">
+            , contest_oldfile = #{contest_oldfile}
+            , contest_newfile = #{contest_newfile}
+        </if>
+        <if test="contest_oldfile == null">
+            , contest_oldfile = null
+            , contest_newfile = null
+        </if>
+        where contest_no = #{contest_no}
+    </update>
+
+    <update id="updateuLike" parameterType="Contest">
+        update contest
+        set like_count = like_count + 1
+        where contest_no = #{contest_no}
+    </update>
+
+    <update id="updatedLike" parameterType="Contest">
+        update contest
+        set like_count = like_count - 1
+        where contest_no = #{contest_no}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="deleteContestBoard" parameterType="_int">
+        delete
+        from contest
+        where contest_no = #{contest_no}
+    </delete>
+
+    <delete id="deleteLike" parameterType="Contest">
+        delete
+        from contestlike
+        where contest_no = #{contest_no}
+          and user_id = #{user_id}
+    </delete>
+
+    <!-- main 좋아요 많은순 4개 출력 -->
+    <select id="selectTop5" resultMap="ContestTop">
+        <![CDATA[
+        select *
+        from (select rownum rnum, CONTEST_NO, CONTEST_TITLE, CONTEST_CONTENT, CONTEST_NEWFILE
+              from (select *
+                    from CONTEST
+                    order by LIKE_COUNT desc, CONTEST_DATE desc))
+        where rnum >= 1
+          and rnum <= 4
+        ]]>
+    </select>
+
+    <!-- 메인 최근 게시글 5개 출력 -->
+    <select id="selectNewTop5" resultMap="ContestResent">
+        <![CDATA[
+        select *
+        from (select rownum rnum, CONTEST_NO, CONTEST_TITLE, LIKE_COUNT, CONTEST_DATE
+              from (select *
+                    from CONTEST
+                    order by CONTEST_NO desc, CONTEST_DATE desc))
+        where rnum >= 1
+          and rnum <= 5
+        ]]>
+    </select>
+
+    <select id="selectContestLikeCheck" parameterType="Map" resultMap="resultContestLike">
+        select *
+        from contestlike
+        where contest_no = #{contest_no}
+          and user_id = #{user_id}
+    </select>
+
+    <!-- 좋아요 증가 -->
+    <insert id="insertContestLike" parameterType="Map">
+        insert into contestlike
+        ( contest_no
+        , user_id)
+        select #{contest_no} as contest_no
+             , #{user_id}    as user_id
+        from dual
+        where not exists (select '1'
+                          from contestlike
+                          where contest_no = #{contest_no}
+                            and user_id = #{user_id})
+    </insert>
+
+    <!-- 좋아요 취소 -->
+    <delete id="deleteContestLike" parameterType="ContestLike">
+        delete
+        from contestlike
+        where contest_no = #{contest_no}
+          and user_id = #{user_id}
+    </delete>
+
+    <!-- 좋아요 카운트 업데이트 -->
+    <update id="updateContestLikeCount" parameterType="_int">
+        update contest
+        set like_count = (select count(*) from contestlike where contest_no = #{ contest_no })
+        where contest_no = #{contest_no}
+    </update>
+</mapper>

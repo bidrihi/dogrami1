@@ -64,11 +64,11 @@ public class Cafe implements java.io.Serializable {
 		this.latitude = latitude;
 	}
 
-	public String getlongitude() {
+	public String getLongitude() {
 		return longitude;
 	}
 
-	public void setlongitude(String longitude) {
+	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}
 

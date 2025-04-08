@@ -2,35 +2,38 @@ package com.cono.dogrami.placeboard.model.vo;
 
 import java.sql.Date;
 
+import com.cono.dogrami.member.model.vo.Member;
+
 public class PlaceBoard implements java.io.Serializable{
 
 	private static final long serialVersionUID = 6L;
 	
-	private String category;			//카테고리
-	private String user_id;				//아이디
-	private String location;			//지역
 	private int board_no;				//게시글 번호(원글번호)
+	private String user_id;				//아이디
+	private String category;			//카테고리
+	private String location;			//지역
 	private String board_title;			//게시글 제목
 	private String board_content;		//게시글 내용
-	private	java.sql.Date board_date;	//작성 날짜
+	private	Date board_date;	//작성 날짜
 	private int board_count;			//조회수
 	private String image;				//첨부이미지
 	private String new_image;			//수정이미지
 	private int star_point;				//별점
+	private int like_count;				//좋아요
+	private Member member;				//닉네임뽑아오기 위함
 
 	
-	public PlaceBoard() {
-		super();
-	}
+	public PlaceBoard() {}
 
 
-	public PlaceBoard(String category, String user_id, String location, int board_no, String board_title,
-			String board_content, Date board_date, int board_count, String image, String new_image, int star_point) {
+	public PlaceBoard(int board_no, String user_id, String category, String location, String board_title,
+			String board_content, Date board_date, int board_count, String image, String new_image, int star_point,
+			int like_count, Member member) {
 		super();
-		this.category = category;
-		this.user_id = user_id;
-		this.location = location;
 		this.board_no = board_no;
+		this.user_id = user_id;
+		this.category = category;
+		this.location = location;
 		this.board_title = board_title;
 		this.board_content = board_content;
 		this.board_date = board_date;
@@ -38,16 +41,18 @@ public class PlaceBoard implements java.io.Serializable{
 		this.image = image;
 		this.new_image = new_image;
 		this.star_point = star_point;
+		this.like_count = like_count;
+		this.member = member;
 	}
 
 
-	public String getCategory() {
-		return category;
+	public int getBoard_no() {
+		return board_no;
 	}
 
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setBoard_no(int board_no) {
+		this.board_no = board_no;
 	}
 
 
@@ -61,6 +66,16 @@ public class PlaceBoard implements java.io.Serializable{
 	}
 
 
+	public String getCategory() {
+		return category;
+	}
+
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+
 	public String getLocation() {
 		return location;
 	}
@@ -68,16 +83,6 @@ public class PlaceBoard implements java.io.Serializable{
 
 	public void setLocation(String location) {
 		this.location = location;
-	}
-
-
-	public int getBoard_no() {
-		return board_no;
-	}
-
-
-	public void setBoard_no(int board_no) {
-		this.board_no = board_no;
 	}
 
 
@@ -101,12 +106,12 @@ public class PlaceBoard implements java.io.Serializable{
 	}
 
 
-	public java.sql.Date getBoard_date() {
+	public Date getBoard_date() {
 		return board_date;
 	}
 
 
-	public void setBoard_date(java.sql.Date board_date) {
+	public void setBoard_date(Date board_date) {
 		this.board_date = board_date;
 	}
 
@@ -151,6 +156,26 @@ public class PlaceBoard implements java.io.Serializable{
 	}
 
 
+	public int getLike_count() {
+		return like_count;
+	}
+
+
+	public void setLike_count(int like_count) {
+		this.like_count = like_count;
+	}
+
+
+	public Member getMember() {
+		return member;
+	}
+
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
+
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -158,11 +183,14 @@ public class PlaceBoard implements java.io.Serializable{
 
 	@Override
 	public String toString() {
-		return "PlaceBoard [category=" + category + ", user_id=" + user_id + ", location=" + location + ", board_no="
-				+ board_no + ", board_title=" + board_title + ", board_content=" + board_content + ", board_date="
+		return "PlaceBoard [board_no=" + board_no + ", user_id=" + user_id + ", category=" + category + ", location="
+				+ location + ", board_title=" + board_title + ", board_content=" + board_content + ", board_date="
 				+ board_date + ", board_count=" + board_count + ", image=" + image + ", new_image=" + new_image
-				+ ", star_point=" + star_point + "]";
+				+ ", star_point=" + star_point + ", like_count=" + like_count + ", member=" + member + "]";
 	}
+
+
+	
 
 	
 }

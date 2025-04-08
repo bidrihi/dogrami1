@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shopMapper">
+
+    <resultMap type="Shop" id="resultShop">
+        <id column="shop_no" property="shop_no"/>
+        <result column="site_name" property="site_name"/>
+        <result column="site_url" property="site_url"/>
+        <result column="site_image" property="site_image"/>
+        <result column="site_image_rename" property="site_image_rename"/>
+
+    </resultMap>
+
+    <!-- 사이트 리스트 페이징 처리 -->
+    <select id="selectList" parameterType="Paging" resultMap="resultShop">
+        <![CDATA[
+        select *
+        from (select rownum rnum, SHOP_NO, SITE_NAME, SITE_URL, SITE_IMAGE, SITE_IMAGE_RENAME
+              from (select *
+                    from SHOP
+                    order by SHOP_NO desc))
+        where rnum >= #{startRow}
+          and rnum <= #{endRow}
+        ]]>
+    </select>
+
+    <!-- 사이트 검색 -->
+    <select id="selectSearch" parameterType="Map" resultMap="resultShop">
+        <![CDATA[
+        select *
+        from (select rownum rnum, SHOP_NO, SITE_NAME, SITE_URL, SITE_IMAGE, SITE_IMAGE_RENAME
+              from (select *
+                    from SHOP
+                    where ${action} like '%' || #{keyword} || '%'
+                    order by SHOP_NO desc))
+        where rnum >= #{ paging.startRow }
+          and rnum <= #{ paging.endRow }
+        ]]>
+    </select>
+
+    <!-- 검색후 리스트 갯수출력 -->
+    <select id="selectListCountSearch" parameterType="Map" resultMap="resultShop">
+        select *
+        from SHOP
+        where ${action} like '%' || #{keyword} || '%'
+    </select>
+
+    <!-- 사이트 추가 -->
+    <insert id="insertShop" parameterType="Shop">
+        insert into Shop (shop_no, site_name, site_url, site_image, SITE_IMAGE_RENAME)
+        values (SHOP_SEQ.nextval, #{site_name}, #{site_url}, #{site_image}, #{site_image_rename})
+    </insert>
+
+    <!-- 총 사이트 갯수 -->
+    <select id="selectListCount" resultType="_int">
+        select count(*)
+        from SHOP
+    </select>
+
+    <select id="selectShop" parameterType="_int" resultMap="resultShop">
+        select *
+        from SHOP
+        where SHOP_NO = #{shop_no}
+    </select>
+
+    <!-- 사이트 수정 -->
+    <update id="updateShop" parameterType="Shop">
+        update SHOP
+        set SITE_NAME = #{site_name}, SITE_URL = #{site_url}, SITE_IMAGE = #{site_image}, SITE_IMAGE_RENAME = #{site_image_rename}
+        where SHOP_NO = #{shop_no}
+    </update>
+
+    <!-- 사이트 삭제 -->
+    <delete id="deleteShop" parameterType="_int">
+        delete
+        from SHOP
+        where SHOP_NO = #{shop_no}
+    </delete>
+
+</mapper>

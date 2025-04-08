@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="questionboardMapper">
+
+    <resultMap type="Question" id="resultquestionBoard">
+        <id column="board_no" property="board_no"/>
+        <result column="board_title" property="board_title"/>
+        <result column="board_writer" property="board_writer"/>
+        <result column="board_content" property="board_content"/>
+        <result column="board_old_file" property="board_old_file"/>
+        <result column="board_new_file" property="board_new_file"/>
+        <result column="board_date" property="board_date"/>
+        <result column="board_count" property="board_count"/>
+        <result column="like_count" property="like_count"/>
+        <association property="member" javaType="Member">
+        	<result column="user_nick" property="user_nick"/> 
+        </association>
+    </resultMap>
+    
+    
+    <!-- 좋아요 체크시 해당 글번호와 체크한 회원id 등록 and 삭제처리 -->
+    <resultMap type="QuestionLike" id="questionLike">
+     	<result column="board_no" property="board_no"/>
+        <result column="user_id" property="user_id"/>
+    </resultMap>
+    
+    <!-- 좋아요 체크 -->
+    <select id="selectQuestionLikeCheck" parameterType="Map" resultMap="questionLike">
+	    select *
+		from questionlike
+		where board_no = #{board_no}
+		and user_id = #{user_id}
+    </select>
+    
+     <!-- 좋아요 증가 -->
+    <insert id="insertQuestionLike" parameterType="Map">
+		insert into questionlike
+		(
+		    board_no
+		    , user_id
+		)
+		select #{board_no} as board_no
+		        ,#{user_id} as user_id
+		  from dual
+		 where not exists ( select '1'
+		                      from questionlike
+		                     where board_no = #{board_no}  
+		                       and user_id = #{user_id} )
+    </insert>
+    
+    <!-- 좋아요 취소 -->
+    <delete id="deleteQuestionLike" parameterType="QuestionLike">
+    	delete from questionlike
+    	where board_no = #{board_no}
+    	and user_id = #{user_id}
+    </delete>
+    
+   <!-- 좋아요 카운트 업데이트 -->
+    <update id="updateQuestionLikeCount" parameterType="_int">
+    	update question
+    	set like_count = ( select count(*) from questionlike where board_no = #{ board_no } )
+    	where board_no = #{board_no}
+    </update>
+    
+    <!-- 좋아요 처리 끝 -->
+	
+	<!-- 게시글 리스트 페이징처리 -->
+	<select id="selectList" parameterType="Paging" resultMap="resultquestionBoard">
+		<![CDATA[
+		select *
+		from(select rownum rnum, board_no, board_title, user_nick, board_date, board_count
+        		from(select * from question 
+        			inner join member
+					on (board_writer = user_id)
+        						order by board_no desc ) )
+        where rnum >= #{ startRow } and rnum <= #{ endRow }
+        
+		]]>
+	</select>
+	
+	
+	<!-- 게시글 상세보기 -->
+	<select id="selectQuestionBoard" parameterType="_int" resultMap="resultquestionBoard">
+		select *
+		from(select *
+        		from(select * from question 
+        			inner join member
+					on (board_writer = user_id)
+        					 ))
+		where board_no = #{board_no}
+	</select>
+ 	
+ 	
+ 	<!-- 닉네임 검색용 -->
+ 	<select id="selectnickname" parameterType="_int" resultType="String">
+ 		select user_nick
+		from question
+		inner join member
+		on (board_writer = user_id)
+		where board_no = #{board_no}
+ 	</select>
+ 
+ 	<!-- 게시글 검색 -->
+ 	<select id="selectSearch" parameterType="Map" resultMap="resultquestionBoard">
+ 		<![CDATA[
+		select *
+		from(select rownum rnum, board_no, board_title, user_nick, board_date, board_count
+        	from(select * from question
+        			inner join member
+					on (board_writer = user_id)
+        	where ${action} like '%' || #{keyword} || '%'
+        	order by board_no desc ) )
+        where rnum >= #{ page.startRow } and rnum <= #{ page.endRow }
+		]]>
+ 	</select>
+ 	
+ 	<!-- 검색 후 리스트 갯수출력 -->
+ 	<select id="selectListCountSearch" parameterType="Map" resultMap="resultquestionBoard">
+		select *
+		from question
+		inner join member
+					on (board_writer = user_id)
+		where ${keyField} like '%' || #{keyword} || '%'
+	</select>
+ 
+ 	<!-- 게시글 상세보기시 조회수 증가 -->
+ 	<update id="updateQuestionBoardReadcount" parameterType="_int">
+ 		update question
+ 		set BOARD_COUNT = BOARD_COUNT +1
+ 		where board_no = #{board_no}
+ 	</update>
+
+	<!-- 게시글 작성 -->
+	<insert id="insertQuestionBoard" parameterType="Question">
+		insert into question
+		(BOARD_NO, BOARD_TITLE, BOARD_WRITER, BOARD_CONTENT, BOARD_OLD_FILE, BOARD_NEW_FILE, BOARD_DATE, BOARD_COUNT, LIKE_COUNT)
+		values(questionBOARD_SEQ.nextval, #{board_title}, #{board_writer}, #{board_content}, #{board_old_file},
+		#{board_new_file}, sysdate, default, default)
+	</insert>
+	
+	<!-- 총 게시글 갯수 -->
+	<select id="selectListCount" resultType="_int">
+	select count(*) from question
+	</select>
+	
+	<!-- 게시글 수정 -->
+	<update id="updateQuestionBoard" parameterType="Question">
+		update question
+		set board_title = #{board_title}, board_content = #{board_content}, board_date = sysdate
+			<if test="board_old_file != null">
+				, board_old_file = #{board_old_file}
+				, board_new_file = #{board_new_file}
+			</if>
+			<if test="board_old_file == null">
+				, board_old_file = null
+				, board_new_file = null
+			</if>
+		where board_no = #{board_no}
+	</update>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="deleteQuestionBoard" parameterType="_int">
+		delete from question
+		where board_no = #{board_no}
+	</delete>
+
+	<!-- Place 내가 쓴글 목록 조회용 -->
+	<select id="selectMyQuestionBoardList"  parameterType="string" resultMap="resultquestionBoard">
+		select board_no, board_title, board_content, board_date, board_count, like_count
+		from question
+		where BOARD_WRITER = #{user_id}
+		order by board_date desc
+	</select>
+</mapper>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="diaryreplyMapper">
+
+    <resultMap type="DiaryReply" id="resultdiaryreply">
+        <id column="ref_no" property="ref_no"/>
+        <result column="board_no" property="board_no"/>
+        <result column="ref_writer" property="ref_writer"/>
+        <result column="ref_content" property="ref_content"/>
+        <result column="ref_date" property="ref_date"/>
+        <association property="member" javaType="Member">
+        	<result column="user_nick" property="user_nick"/> 
+        </association>
+    </resultMap>
+    
+    <!-- 댓글 목록 출력-->
+	<select id="selectList" parameterType="_int" resultMap="resultdiaryreply">
+		select *
+		from(select * 
+       	 from(select * from diaryreply 
+        	inner join member
+				on (ref_writer = user_id)
+        			order by ref_no desc ) )
+        where board_no = #{board_no}
+	</select>
+	
+	<!-- 댓글 갯수 -->
+	<select id="selectDiaryReplyCount" parameterType="_int" resultType="_int">
+	select count(ref_no)
+	from diaryreply
+	where board_no = #{board_no}
+	</select>
+	
+	<!-- 닉네임 -->
+	<select id="selectnickname" parameterType="_int" resultType="String">
+	select user_nick
+	from diaryreply inner join member
+	on (ref_writer = user_id)
+	where ref_no = #{ref_no}
+	</select>
+	
+	<!-- 댓글달기 -->
+	<insert id="insertDiaryReply" parameterType="DiaryReply">
+		insert into diaryreply 
+		values(diaryREPLY_SEQ.NEXTVAL, #{board_no}, #{ref_writer}, #{ref_content}, default)
+	</insert>
+
+	<!-- 댓글수정 -->
+	<update id="updateDiaryReply" parameterType="DiaryReply">
+		update diaryreply
+		set ref_content = #{ref_content}, ref_date = default
+		where ref_no = #{ref_no}
+	</update>
+	
+	<!-- 댓글삭제 -->
+	<delete id="deleteDiaryReply" parameterType="_int">
+		delete from diaryreply
+		where ref_no = #{ref_no}
+	</delete>
+</mapper>

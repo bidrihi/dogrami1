@@ -15,7 +15,8 @@ public class Trainning implements java.io.Serializable{
 			super();
 		}
 
-		public Trainning(String name, String address, String address2, String phone, String latitude, String longitude) {
+		public Trainning(String name, String address, String address2, String phone, String latitude,
+				String longitude) {
 			super();
 			this.name = name;
 			this.address = address;
@@ -65,11 +66,11 @@ public class Trainning implements java.io.Serializable{
 			this.latitude = latitude;
 		}
 
-		public String getlongitude() {
+		public String getLongitude() {
 			return longitude;
 		}
 
-		public void setlongitude(String longitude) {
+		public void setLongitude(String longitude) {
 			this.longitude = longitude;
 		}
 
@@ -82,8 +83,7 @@ public class Trainning implements java.io.Serializable{
 			return "Trainning [name=" + name + ", address=" + address + ", address2=" + address2 + ", phone=" + phone
 					+ ", latitude=" + latitude + ", longitude=" + longitude + "]";
 		}
-	    
-	   
-	    
+
+		
 	    
 	}

@@ -1,12 +1,14 @@
 package com.cono.dogrami.dog.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.cono.dogrami.dog.model.vo.Dog;
+import com.cono.dogrami.randomquiz.model.vo.RandomQuiz;
 
 @Repository("dogDao")
 public class DogDao {
@@ -37,5 +39,10 @@ public class DogDao {
 	public int deleteDog(Dog dog_type) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public ArrayList<Dog> selectDoglist(Dog dog) {
+		List<Dog> list = session.selectList("dogMapper.selectDoglist",dog);
+		return (ArrayList<Dog>)list;
 	}
 }

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberMapper">
+
+    <!-- select 한 결과집합 ResultSet 에서 한 행씩 꺼내서 각 컬럼값들을 vo 객체의 각 필드에 저장 처리하는 작업
+        : 결과 매핑 리스트나 맵에 여러 객체를 저장 처리도 포함됨 -->
+    <resultMap type="Member" id="resultMember">
+        <result property="user_name" column="user_name"/>
+        <result property="user_nick" column="user_nick"/>
+        <result property="user_id" column="user_id"/>
+        <result property="user_pwd" column="user_pwd"/>
+        <result property="email" column="email"/>
+        <result property="birth" column="birth"/>
+        <result property="gender" column="gender"/>
+        <result property="user_picture" column="user_picture"/>
+        <result property="dog_name" column="dog_name"/>
+        <result property="dog_birth" column="dog_birth"/>
+        <result property="dog_type" column="dog_type"/>
+        <result property="dog_gender" column="dog_gender"/>
+        <result property="user_admin" column="user_admin"/>
+        <result property="login_limit" column="login_limit"/>
+    </resultMap>
+
+    <select id="selectMember1" parameterType="string"
+            resultMap="resultMember">
+        select *
+        from member
+        where user_id = #{ user_id }
+    </select>
+
+    <!-- 로그인 처리용 -->
+    <select id="selectLogin" parameterType="Member"
+            resultType="Member">
+        select *
+        from member
+        where user_id = #{ user_id }
+          and user_pwd = #{user_pwd}
+          and login_limit = 'Y'
+    </select>
+
+    <select id="selectDupCheckId" parameterType="string"
+            resultType="_int">
+        select count(user_id)
+        from member
+        where user_id = #{user_id}
+    </select>
+
+    <!-- 회원 가입 처리용 -->
+    <insert id="insertMember" parameterType="Member">
+        insert into member
+        (user_name, user_id, user_nick, user_pwd, birth, user_picture, gender, email, user_admin, login_limit, dog_name,
+         dog_birth, dog_type, dog_gender)
+        values (#{ user_name }, #{ user_id }, #{ user_nick }, #{ user_pwd }, #{ birth }, #{ user_picture }, #{ gender },
+                #{ email }, default, default, #{ dog_name }, #{ dog_birth }, #{ dog_type }, #{ dog_gender })
+    </insert>
+
+    <!-- 회원 전체 조회용 -->
+    <select id="selectList" parameterType="Paging" resultMap="resultMember">
+		<![CDATA[
+        select *
+        from(select rownum rnum, user_name, user_id, user_nick, birth, gender,
+                    email, user_admin, login_limit, dog_name, dog_birth, dog_type, dog_gender
+             from(select * from member))
+        where rnum >= #{ startRow } and rnum <= #{ endRow }
+        ]]>
+	</select>
+
+    <!-- 전체회원수 -->
+    <select id="selectListCount" resultType="_int">
+        select count(*) from member
+    </select>
+
+    <!-- 로그인 제한 처리용 -->
+    <update id="updateLoginLimit" parameterType="Member">
+        update member
+        set login_limit = #{login_limit}
+        where user_id = #{user_id}
+    </update>
+
+    <!-- 회원 정보 수정 처리용 -->
+    <update id="updateMember" parameterType="Member">
+        update member
+        set user_name  = #{ user_name },
+            user_id    = #{ user_id },
+            user_nick  = #{ user_nick },
+            user_pwd   = #{ user_pwd },
+            birth      = #{ birth },
+            gender     = #{ gender },
+            email      = #{ email },
+            dog_name   = #{ dog_name },
+            dog_birth  = #{ dog_birth },
+            dog_type   = #{ dog_type },
+            dog_gender = #{ dog_gender }
+        where user_id = #{ user_id }
+
+    </update>
+
+    <!-- 회원 탈퇴 처리용 -->
+    <delete id="deleteMember" parameterType="string">
+        delete
+        from member
+        where user_id = #{user_id}
+    </delete>
+
+    <!-- 관리자 권한 부여용 -->
+    <update id="updateUserAdmin" parameterType="Member">
+        update member
+        set user_admin = #{user_admin}
+        where user_id = #{user_id}
+    </update>
+
+    <!-- 검색용 select -->
+    <select id="selectSearch" parameterType="Map" resultMap="resultMember">
+		<![CDATA[
+        select *
+        from(select rownum rnum, user_name, user_id, user_nick, birth, gender,
+                    email, user_admin, login_limit, dog_name, dog_birth, dog_type, dog_gender
+             from(select * from member
+                  where ${action} like '%' || #{keyword} || '%'))
+        where rnum >= #{ paging.startRow } and rnum <= #{ paging.endRow }
+        ]]>
+	</select>
+
+    <select id="selectListCountSearch" parameterType="Map" resultMap="resultMember">
+        select *
+        from member
+        where ${action} like '%' || #{keyword} || '%'
+    </select>
+
+    <!-- 임시 비밀번호 -->
+    <update id="updatepw" parameterType="Member">
+        update member
+        set user_pwd = #{user_pwd}
+        where user_id = #{user_id}
+    </update>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dogMapper">
+	
+	<resultMap type="Dog" id="resultDog">
+		<id property="dog_type" column="dog_type" />
+		<result property="dog_size" column="dog_size" />
+		<result property="dog_hair" column="dog_hair" />
+		<result property="dog_stamina" column="dog_stamina" />
+		<result property="dog_char" column="dog_char" />
+		<result property="dog_loc" column="dog_loc" />
+		<result property="dog_img" column="dog_img" />
+		<result property="dog_info" column="dog_info" />
+	</resultMap>
+
+
+
+<!-- select -->
+<select id="selectDoglist"  parameterType="Dog"  resultMap="resultDog" >
+	select * from dog 
+	where dog_size= #{dog_size} and dog_hair= #{dog_hair} and dog_stamina= #{dog_stamina} and dog_char= #{dog_char}
+</select>
+
+<!-- insert -->
+
+
+<!-- update -->
+
+
+<!-- delete -->
+
+
+
+
+</mapper>
+
+
+
+
+
+
+

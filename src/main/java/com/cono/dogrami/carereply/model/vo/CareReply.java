@@ -2,91 +2,92 @@ package com.cono.dogrami.carereply.model.vo;
 
 import java.sql.Date;
 
+import com.cono.dogrami.member.model.vo.Member;
+
 public class CareReply implements java.io.Serializable {
 
 	private static final long serialVersionUID = 7L;
 
-	private int rep_no; 			// 댓글번호
+	private int ref_no; 			// 댓글번호
 	private int board_no; 			// 원글번호
-	private String rep_writer; 		// 댓글작성자
-	private String rep_content; 	// 댓글내용
-	private java.sql.Date rep_date; // 댓글
+	private String ref_writer; 		// 댓글작성자
+	private String ref_content; 	// 댓글내용
+	private Date ref_date; // 댓글날짜
+	private Member member;
 	
 	public CareReply() {
 		super();
 	}
 
-	
-	public CareReply(int rep_no, int board_no, String rep_writer, String rep_content, Date rep_date) {
+	public CareReply(int ref_no, int board_no, String ref_writer, String ref_content, Date ref_date, Member member) {
 		super();
-		this.rep_no = rep_no;
+		this.ref_no = ref_no;
 		this.board_no = board_no;
-		this.rep_writer = rep_writer;
-		this.rep_content = rep_content;
-		this.rep_date = rep_date;
+		this.ref_writer = ref_writer;
+		this.ref_content = ref_content;
+		this.ref_date = ref_date;
+		this.member = member;
 	}
 
-
-	public int getRep_no() {
-		return rep_no;
+	public int getRef_no() {
+		return ref_no;
 	}
 
-
-	public void setRep_no(int rep_no) {
-		this.rep_no = rep_no;
+	public void setRef_no(int ref_no) {
+		this.ref_no = ref_no;
 	}
-
 
 	public int getBoard_no() {
 		return board_no;
 	}
 
-
 	public void setBoard_no(int board_no) {
 		this.board_no = board_no;
 	}
 
-
-	public String getRep_writer() {
-		return rep_writer;
+	public String getRef_writer() {
+		return ref_writer;
 	}
 
-
-	public void setRep_writer(String rep_writer) {
-		this.rep_writer = rep_writer;
+	public void setRef_writer(String ref_writer) {
+		this.ref_writer = ref_writer;
 	}
 
-
-	public String getRep_content() {
-		return rep_content;
+	public String getRef_content() {
+		return ref_content;
 	}
 
-
-	public void setRep_content(String rep_content) {
-		this.rep_content = rep_content;
+	public void setRef_content(String ref_content) {
+		this.ref_content = ref_content;
 	}
 
-
-	public java.sql.Date getRep_date() {
-		return rep_date;
+	public Date getRef_date() {
+		return ref_date;
 	}
 
-
-	public void setRep_date(java.sql.Date rep_date) {
-		this.rep_date = rep_date;
+	public void setRef_date(Date ref_date) {
+		this.ref_date = ref_date;
 	}
 
+	public Member getMember() {
+		return member;
+	}
+
+	public void setMember(Member member) {
+		this.member = member;
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
-
 	@Override
 	public String toString() {
-		return "CareReply [rep_no=" + rep_no + ", board_no=" + board_no + ", rep_writer=" + rep_writer
-				+ ", rep_content=" + rep_content + ", rep_date=" + rep_date + "]";
+		return "CareReply [ref_no=" + ref_no + ", board_no=" + board_no + ", ref_writer=" + ref_writer
+				+ ", ref_content=" + ref_content + ", ref_date=" + ref_date + ", member=" + member + "]";
 	}
 
+	
+	
 	
 }

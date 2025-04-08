@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="randomQuizMapper">
+
+    <resultMap type="RandomQuiz" id="resultRandomQuiz">
+        <id property="rd_num" column="rd_num"/>
+        <result property="rd_answer" column="rd_answer"/>
+        <result property="rd_explain" column="rd_explain"/>
+        <result property="rd_quiz" column="rd_quiz"/>
+    </resultMap>
+
+    <!-- insert -->
+    <insert id="insertQuiz" parameterType="RandomQuiz">
+        insert into randomquiz(rd_num, rd_quiz, rd_answer, rd_explain)
+        values (RANDOMQUIZ_SEQ.nextval, #{rd_quiz}, #{rd_answer}, #{rd_explain})
+    </insert>
+
+    <!-- select  -->
+    <select id="selectAll" resultMap="resultRandomQuiz">
+        select *
+        from randomquiz
+        order by RD_NUM desc
+    </select>
+
+    <select id="selectOne" parameterType="String" resultMap="resultRandomQuiz">
+        select *
+        from randomquiz
+        where rd_quiz = #{rd_quiz}
+    </select>
+
+    <select id="selectRandomQuiz" parameterType="_int" resultMap="resultRandomQuiz">
+        select *
+        from randomquiz
+        where rd_num = #{rd_num}
+    </select>
+
+    <select id="selectTitle" parameterType="String" resultMap="resultRandomQuiz">
+        select *
+        from randomquiz
+        where rd_quiz like '%' || #{ keyword } || '%'
+        order by rd_num desc
+    </select>
+
+    <select id="startselectAll" resultMap="resultRandomQuiz">
+		<![CDATA[
+        select *
+        from (select *
+              from randomquiz
+              order by dbms_random.value)
+        where rownum < 2
+        ]]>
+	</select>
+
+    <select id="rdselectListCount" resultType="Paging">
+        select count(*)
+        from randomquiz
+    </select>
+
+    <!--  delete -->
+    <delete id="deleteQuiz" parameterType="_int">
+        DELETE
+        FROM randomquiz
+        WHERE rd_num = #{rd_num}
+    </delete>
+
+    <!-- update -->
+    <update id="updateQuiz" parameterType="randomquiz">
+        update randomquiz
+        set rd_quiz   = #{rd_quiz},
+            rd_answer = #{rd_answer},
+            rd_explain=#{rd_explain}
+        where rd_num = #{rd_num}
+    </update>
+
+    <select id="selectSearch" parameterType="Map" resultMap="resultRandomQuiz">
+        <![CDATA[
+        select *
+        from (select rownum rnum, RD_NUM, RD_QUIZ, RD_ANSWER, RD_EXPLAIN
+              from (select *
+                    from RANDOMQUIZ
+                    where ${action} like '%' || #{keyword} || '%'
+                    order by RD_NUM desc))
+        where rnum >= #{ paging.startRow }
+          and rnum <= #{ paging.endRow }
+        ]]>
+    </select>
+
+    <select id="selectListCountSearch" parameterType="Map" resultMap="resultRandomQuiz">
+        select *
+        from RANDOMQUIZ
+        where ${action} like '%' || #{keyword} || '%'
+    </select>
+</mapper>

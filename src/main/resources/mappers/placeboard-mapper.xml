@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="placeboardMapper">
+
+    <resultMap type="PlaceBoard" id="resultPlaceBoard">
+        <id column="board_no" property="board_no"/>
+        <result column="user_id" property="user_id"/>
+        <result column="category" property="category"/>
+        <result column="location" property="location"/>
+        <result column="board_title" property="board_title"/>
+        <result column="board_content" property="board_content"/>
+        <result column="board_count" property="board_count"/>
+        <result column="board_date" property="board_date"/>
+        <result column="image" property="image"/>
+        <result column="new_image" property="new_image"/>
+        <result column="star_point" property="star_point"/>
+        <result column="like_count" property="like_count"/>
+        <association property="member" javaType="Member">
+            <result column="user_nick" property="user_nick"/>
+        </association>
+    </resultMap>
+
+    <resultMap type="PlaceBoard" id="PlaceResent">
+        <id column="board_no" property="board_no"/>
+        <result column="board_title" property="board_title"/>
+        <result column="category" property="category"/>
+        <result column="location" property="location"/>
+        <result column="board_date" property="board_date"/>
+    </resultMap>
+
+    <!-- 좋아요 체크용 리절트맵 -->
+    <resultMap type="PlaceLike" id="resultPlaceLike">
+        <result column="board_no" property="board_no"/>
+        <result column="user_id" property="user_id"/>
+    </resultMap>
+
+    <select id="selectListCount" resultType="_int">
+        select count(*)
+        from placeboard
+    </select>
+
+
+    <!-- 좋아요 체크 -->
+    <select id="selectPlaceLikeCheck" parameterType="Map" resultMap="resultPlaceLike">
+        select *
+        from placelike
+        where board_no = #{board_no}
+          and user_id = #{user_id}
+    </select>
+
+    <!-- 좋아요 증가 -->
+    <insert id="insertPlaceLike" parameterType="Map">
+        insert into placelike
+        ( board_no
+        , user_id)
+        select #{board_no} as board_no
+             , #{user_id}  as user_id
+        from dual
+        where not exists (select '1'
+                          from placelike
+                          where board_no = #{board_no}
+                            and user_id = #{user_id})
+    </insert>
+
+    <!-- 좋아요 취소 -->
+    <delete id="deletePlaceLike" parameterType="PlaceLike">
+        delete
+        from placelike
+        where board_no = #{board_no}
+          and user_id = #{user_id}
+    </delete>
+
+    <!-- 좋아요 카운트 업데이트 -->
+    <update id="updatePlaceLikeCount" parameterType="_int">
+        update placeboard
+        set like_count = (select count(*) from placelike where board_no = #{ board_no })
+        where board_no = #{board_no}
+    </update>
+    <!-- 좋아요 처리 끝 -->
+
+    <!-- 검색한 항목에 따른 갯수 -->
+    <select id="selectListCountSearch" parameterType="Map" resultMap="resultPlaceBoard">
+        select *
+        from placeboard
+                 inner join MEMBER using (user_id)
+        where ${action} like '%' || #{keyword} || '%'
+    </select>
+
+    <!-- 지역리스트 갯수 -->
+    <select id="selectListLocatonCount" parameterType="Map" resultMap="resultPlaceBoard">
+        select *
+        from placeboard
+        where location like '%' || #{location} || '%'
+    </select>
+
+    <!-- 전체리스트 -->
+    <select id="selectList" parameterType="Paging" resultMap="resultPlaceBoard">
+		<![CDATA[
+        select *
+        from (select rownum rnum,
+                     board_no,
+                     user_id,
+                     user_nick,
+                     category,
+                     location,
+                     board_title,
+                     board_content,
+                     board_date,
+                     board_count,
+                     image,
+                     new_image,
+                     star_point,
+                     like_count
+              from (select *
+                    from placeboard
+                             inner join MEMBER using (user_id)
+                    order by board_no desc))
+        where rnum >= #{ startRow }
+          and rnum <= #{ endRow }
+        ]]>
+	</select>
+
+    <!-- 검색한 항목에 따른 리스트 -->
+    <select id="selectSearch" parameterType="Map" resultMap="resultPlaceBoard">
+	 	<![CDATA[
+        select *
+        from (select rownum rnum,
+                     board_no,
+                     user_id,
+                     user_nick,
+                     category,
+                     location,
+                     board_title,
+                     board_content,
+                     board_date,
+                     board_count,
+                     image,
+                     new_image,
+                     star_point,
+                     like_count
+              from (select *
+                    from placeboard
+                             inner join MEMBER using (user_id)
+                    order by board_no desc))
+        where rnum >= #{ paging.startRow }
+          and rnum <= #{ paging.endRow }
+          and ${action} like '%' || #{keyword} || '%'
+        ]]>
+	</select>
+
+    <!-- 지역리스트 페이징 -->
+    <select id="selectLocation" parameterType="Map" resultMap="resultPlaceBoard">
+		    <![CDATA[
+        select *
+        from (select rownum rnum,
+                     board_no,
+                     user_id,
+                     user_nick,
+                     category,
+                     location,
+                     board_title,
+                     board_content,
+                     board_date,
+                     board_count,
+                     image,
+                     new_image,
+                     star_point,
+                     like_count
+              from (select *
+                    from placeboard
+                             inner join MEMBER using (user_id)
+                    where location = #{location}
+                    order by board_no desc))
+        where rnum >= #{ paging.startRow }
+          and rnum <= #{ paging.endRow }
+        ]]>
+		
+	</select>
+    <!-- 상세보기 -->
+    <select id="selectPlaceBoard" parameterType="_int" resultMap="resultPlaceBoard">
+        select *
+        from (select *
+              from (select *
+                    from placeboard
+                             inner join member
+                                        using (user_id)))
+        where board_no = #{board_no}
+    </select>
+
+    <!-- 닉네임 검색용 -->
+    <select id="selectnickname" parameterType="_int" resultType="String">
+        select user_nick
+        from placeboard
+                 inner join member
+                            using (user_id)
+        where board_no = #{board_no}
+    </select>
+    <!-- 조회수 증가 -->
+    <update id="updateCount" parameterType="_int">
+        update placeboard
+        set board_count = board_count + 1
+        where board_no = #{board_no}
+    </update>
+
+    <!-- 조회수 감소 -->
+    <update id="downUpdateCount" parameterType="_int">
+        update placeboard
+        set board_count = board_count - 1
+        where board_no = #{board_no}
+    </update>
+
+    <!-- 게시글 업데이트 -->
+    <update id="updateBoard" parameterType="PlaceBoard">
+        update placeboard
+        set board_title = #{board_title},
+        board_content = #{board_content},
+        category = #{category},
+        location = #{location},
+        board_date = sysdate,
+        star_point = #{star_point}
+        <if test="new_image != null">
+            , image = #{image}
+            , new_image = #{new_image}
+        </if>
+        <if test="new_image == null">
+            , image = null
+            , new_image = null
+        </if>
+        where board_no = #{board_no}
+    </update>
+
+    <!-- 게시글 작성 -->
+    <insert id="insertBoard" parameterType="PlaceBoard">
+        insert into placeboard(board_no, board_title, user_id, category,
+                               location, image, board_content, star_point,
+                               board_date, board_count, new_image)
+        values (PlACEBOARD_SEQ.nextval, #{board_title}, #{user_id}, #{category},
+                #{location}, #{image}, #{board_content}, #{star_point}, sysdate, default, #{new_image})
+    </insert>
+
+    <!-- 게시글 삭제 -->
+    <delete id="deleteBoard" parameterType="PlaceBoard">
+        delete
+        from placeboard
+        where board_no = #{board_no}
+    </delete>
+
+    <!-- Place 내가 쓴글 목록 조회용 -->
+    <select id="selectMyPlaceBoardList" parameterType="string" resultMap="resultPlaceBoard">
+        select board_no, board_title, board_content, board_date, board_count, like_count
+        from placeboard
+        where USER_ID = #{user_id}
+        order by board_date desc
+    </select>
+
+    <!-- main 최근 게시글 5개 출력 -->
+    <select id="selectNewTop5" resultMap="PlaceResent">
+        <![CDATA[
+        select *
+        from (select rownum rnum, BOARD_NO, BOARD_TITLE, CATEGORY, LOCATION, BOARD_DATE
+              from (select *
+                    from PLACEBOARD
+                    order by BOARD_NO desc, BOARD_DATE desc))
+        where rnum >= 1
+          and rnum <= 5
+        ]]>
+    </select>
+</mapper>

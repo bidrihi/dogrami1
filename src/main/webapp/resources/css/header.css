@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'siu';
+    src: url("../fonts/Ownglyph_2022_UWY_Si_Woo-Rg.woff");
+}
+
+body {
+    font-family: 'siu';
+}
+
+.header div nav ul li a {
+    font-family: 'siu';
+    font-size: 22px;
+}
+
+.header div nav ul li a:hover {
+    font-family: 'siu';
+    font-size: 22px;
+}
+
+.header div nav ul li a[class='active'] {
+    font-family: 'siu';
+    font-size: 22px;
+}
+
+.header div div {
+    font-size: 22px;
+}
+
+.header div .navbar ul li a[class='visited'] {
+    font-family: 'siu';
+    font-size: 22px;
+}
+
+.header div .navbar ul li a[class='link'] {
+    font-family: 'siu';
+    font-size: 22px;
+}
+
+.header div .navbar ul li a[class='hover'] {
+    font-family: 'siu';
+    font-size: 22px;
+}

@@ -1,6 +1,7 @@
 package com.cono.dogrami.placereply.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,35 +15,30 @@ public class PlaceReplyDao {
 	@Autowired
 	private SqlSessionTemplate session;
 
-	public ArrayList<PlaceReply> SelectList() {
-		return null;
+	public ArrayList<PlaceReply> selectList(int board_no) {
+		List<PlaceReply> list = session.selectList("placereplyMapper.selectList",board_no);
+		return (ArrayList<PlaceReply>)list;
 	}
 
-	public ArrayList<PlaceReply> SelectNick(String keyword) {
-		return null;
+
+	public int insertReply(PlaceReply placeReply) {
+		return session.insert("placereplyMapper.insertReply", placeReply);
 	}
 
-	public ArrayList<PlaceReply> SelectTtile(String keyword) {
-		return null;
+	public int updateReply(PlaceReply placeReply) {
+		return session.update("placereplyMapper.updateReply", placeReply);
 	}
 
-	public ArrayList<PlaceReply> SelectLocation(String keyword) {
-		return null;
+	public int deleteReply(int rep_no) {
+		return session.delete("placereplyMapper.deleteReply", rep_no);
 	}
 
-	public int insertBoard(PlaceReply reply) {
-		return 0;
+	public String selectnickname(int ref_no) {
+		return session.selectOne("placereplyMapper.selectnickname",ref_no);
 	}
 
-	public int updateBoard(PlaceReply reply) {
-		return 0;
-	}
 
-	public int deleteBoard(int rep_no) {
-		return 0;
-	}
-
-	public PlaceReply SelectOne(int rep_no) {
-		return null;
+	public int selectPlaceReplyCount(int board_no) {
+		return session.selectOne("placereplyMapper.selectPlaceReplyCount", board_no);
 	}
 }

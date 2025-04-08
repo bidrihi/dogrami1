@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="carereplyMapper">
+	
+	<resultMap type="CareReply" id="resultCareReply">
+		<id column="ref_no" property="ref_no"></id>
+		<result column="board_no" property="board_no"/>
+		<result column="ref_writer" property="ref_writer"/>
+		<result column="ref_content" property="ref_content"/>
+		<result column="ref_date" property="ref_date"/>
+		 <association property="member" javaType="Member">
+        	<result column="user_nick" property="user_nick"/> 
+        </association>
+	</resultMap>
+	
+	<select id="selectList" parameterType="_int" resultMap="resultCareReply">
+		select *
+		from(select * 
+       	 from(select * from carereply 
+        	inner join member
+				on (ref_writer = user_id)
+        			order by ref_no desc ) )
+        where board_no = #{board_no}
+	</select>
+	
+	<!-- 댓글 갯수 -->
+	<select id="selectCareReplyCount" parameterType="_int" resultType="_int">
+	select count(ref_no)
+	from carereply
+	where board_no = #{board_no}
+	</select>
+	
+	<!-- 닉네임 -->
+	<select id="selectnickname" parameterType="_int" resultType="String">
+	select user_nick
+	from carereply inner join member
+	on (ref_writer = user_id)
+	where ref_no = #{ref_no}
+	</select>
+	
+	<insert id="insertReply" parameterType="CareReply">
+		insert into carereply (ref_no, board_no, ref_writer, ref_content, ref_date) 
+		values(CAREREPLY_SEQ.nextval, #{board_no}, #{ref_writer},
+			#{ref_content}, sysdate)
+	</insert>
+	
+	<delete id="deleteReply" parameterType="_int">
+		delete from carereply
+		where ref_no = #{ref_no}
+	</delete>
+	
+	<update id="updateReply" parameterType="CareReply">
+		update carereply
+		set ref_content = #{ref_content}
+		where ref_no = #{ref_no} and
+			board_no = #{board_no}
+	</update>
+
+
+
+</mapper>
